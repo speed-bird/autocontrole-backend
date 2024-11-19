@@ -9,17 +9,20 @@ app.get('/', (req, res) => {
   res.send('Hello, backend is running!');
 });
 
-// Route POST pour le login
 app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // Logique de vérification ou d'authentification
-  if (username === 'robert_jonathan@hotmail.com' && password === 'Cuisine7') {
-    res.status(200).json({ message: 'Login successful' });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
-  }
-});
+    const { username, password } = req.body;
+  
+    console.log('Login attempt:', { username, password }); // Log de la requête
+  
+    if (username === 'robert_jonathan@hotmail.com' && password === 'Cuisine7') {
+      console.log('Login successful');
+      res.status(200).json({ message: 'Login successful' });
+    } else {
+      console.log('Invalid credentials');
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  });
+  
 
 // Démarrer le serveur
 app.listen(port, () => {
