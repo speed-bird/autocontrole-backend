@@ -1,13 +1,16 @@
+const cors = require('cors');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 
 app.use(express.json()); // Middleware pour parser les requêtes JSON
+app.use(cors());
 
 // Route GET pour la racine
 app.get('/', (req, res) => {
   res.send('Hello, backend is running!');
 });
+
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
