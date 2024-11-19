@@ -1,11 +1,12 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Hello, backend is running!');
-});
-
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+  
+    console.log('Données reçues:', req.body);  // Ajoute ceci pour vérifier les données envoyées
+  
+    if (username === 'robert_jonathan@hotmail.com' && password === 'Cuisine7') {
+      res.status(200).json({ message: 'Login successful' });
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  });
+  
