@@ -1,8 +1,13 @@
-const express = require('express'); // Importer Express
-const app = express(); // Initialiser l'application Express
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 
-// Middleware pour parser les requêtes JSON
-app.use(express.json());
+app.use(express.json()); // Middleware pour parser les requêtes JSON
+
+// Route GET pour la racine
+app.get('/', (req, res) => {
+  res.send('Hello, backend is running!');
+});
 
 // Route POST pour le login
 app.post('/login', (req, res) => {
@@ -16,8 +21,7 @@ app.post('/login', (req, res) => {
   }
 });
 
-// Démarrer le serveur sur un port donné
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Démarrer le serveur
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
