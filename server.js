@@ -4,7 +4,10 @@ const cheerio = require('cheerio');
 require('dotenv').config(); // Pour charger les variables d'environnement
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 const cors = require('cors');
 // Ajoutez ce middleware pour analyser les données JSON dans les requêtes
 app.use(express.json()); // <-- Cette ligne est nécessaire !
