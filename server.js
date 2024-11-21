@@ -6,7 +6,7 @@ require('dotenv').config(); // Pour charger les variables d'environnement
 const app = express();
 console.log('Using port:', process.env.PORT); // Ajoute cette ligne pour vérifier le port utilisé
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
