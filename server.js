@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 require('dotenv').config(); // Pour charger les variables d'environnement
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
