@@ -6,10 +6,7 @@ require('dotenv').config(); // Pour charger les variables d'environnement
 const app = express();
 console.log('Using port:', process.env.PORT); // Ajoute cette ligne pour vérifier le port utilisé
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+const port = process.env.PORT || 3001;
 const cors = require('cors');
 // Ajoutez ce middleware pour analyser les données JSON dans les requêtes
 app.use(express.json()); // <-- Cette ligne est nécessaire !
