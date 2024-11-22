@@ -34,8 +34,6 @@ let cookies = [];
 
 async function loginAndFetch(login, password) {
   try {
-    const messages = []; // Array to collect messages
-    
     // Étape 1 : Charger la page de connexion
     const loginPage = await instance.get('/Login.aspx');
     const $ = cheerio.load(loginPage.data);
@@ -98,7 +96,7 @@ async function loginAndFetch(login, password) {
     
     // Collecter les données de réservation
     for (const station of stations) {
-      messages.push(`\n--- Vérification pour la station : ${station.name} ---`); // Ajouter le message ici
+      console.log(`\n--- Vérification pour la station : ${station.name} ---`);
 
       const reservationResponse = await instance.post(
         reservationUrl,
@@ -129,14 +127,14 @@ async function loginAndFetch(login, password) {
       // Renvoi du HTML complet dans la réponse
       results.push({ station: station.name, html: pageHTML });
     }
-
-    return { messages, results }; // Retourner aussi les messages
+    console.log('Réponse de réservation:', results); // Affichez les données avant de les renvoyer
+    return results;
+    
   } catch (error) {
     console.error('Erreur dans la récupération des données:', error.response ? error.response.data : error.message);
     throw error;
   }
 }
-
 
 app.post('/fetch-reservations', async (req, res) => {
   const { login, password } = req.body;
