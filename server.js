@@ -46,10 +46,6 @@ async function loginAndFetch(login, password, onProgress) {
         __EVENTVALIDATION: eventValidation,
         txtUser: login,
         txtPassWord: password,
-        VoertuigId: '16e825e6-e99c-41d2-8461-4e1460dc080b',
-        KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
-        KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b',
-        oldReservationId: 'e76e98f9-4bda-410d-9035-163e6c772a24',
         btnLogin: 'Se connecter',
       }),
       {
@@ -75,6 +71,10 @@ async function loginAndFetch(login, password, onProgress) {
           __VIEWSTATE: viewState,
           __VIEWSTATEGENERATOR: viewStateGenerator,
           __EVENTVALIDATION: eventValidation,
+          VoertuigId: '16e825e6-e99c-41d2-8461-4e1460dc080b',
+          KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
+          KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b',
+          oldReservationId: 'e76e98f9-4bda-410d-9035-163e6c772a24',
         },
         {
           headers: { Cookie: cookies.join('; ') },
