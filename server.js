@@ -24,9 +24,9 @@ const instance = axios.create({
 });
 
 let cookies = [];
-console.log(login);
 async function loginAndFetch(login, password, onProgress) {
   try {
+    console.log(login);
     onProgress('Chargement de la page de connexion...');
     const loginPage = await instance.get('/Login.aspx');
     const $ = cheerio.load(loginPage.data);
