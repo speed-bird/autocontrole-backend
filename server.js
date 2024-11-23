@@ -24,6 +24,7 @@ const instance = axios.create({
 });
 
 let cookies = [];
+
 async function loginAndFetch(login, password, onProgress) {
   try {
     console.log(login);
@@ -61,7 +62,6 @@ async function loginAndFetch(login, password, onProgress) {
 
     const results = [];
     for (const station of stations) {
-      
       onProgress(`Vérification des réservations pour : ${station.name}`);
       const reservationResponse = await instance.post(
         reservationUrl,
@@ -87,7 +87,7 @@ async function loginAndFetch(login, password, onProgress) {
   }
 }
 
-app.post('/fetch-reservations', async (req, res) => {
+app.post('/fetch-reservations', (req, res) => {
   const { login, password } = req.body;
 
   if (!login || !password) {
@@ -95,21 +95,21 @@ app.post('/fetch-reservations', async (req, res) => {
   }
 
   const progressUpdates = [];
+  res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
+
   const onProgress = (message) => {
-    progressUpdates.push(message);
-    res.write(JSON.stringify({ progress: message }) + '\n'); // Envoi en temps réel
+    res.write(`data: ${JSON.stringify({ progress: message })}\n\n`); // Envoi des mises à jour en temps réel
   };
 
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-
-  try {
-    const data = await loginAndFetch(login, password, onProgress);
-    res.write(JSON.stringify({ success: true, data }) + '\n');
-  } catch (error) {
-    res.write(JSON.stringify({ success: false, error: error.message }) + '\n');
-  } finally {
-    res.end(); // Fin du streaming
-  }
+  loginAndFetch(login, password, onProgress)
+    .then((data) => {
+      res.write(`data: ${JSON.stringify({ success: true, data })}\n\n`);
+      res.end();
+    })
+    .catch((error) => {
+      res.write(`data: ${JSON.stringify({ success: false, error: error.message })}\n\n`);
+      res.end();
+    });
 });
 
 app.listen(port, () => {
