@@ -24,7 +24,7 @@ const instance = axios.create({
 });
 
 let cookies = [];
-
+console.log("test");
 async function loginAndFetch(login, password, onProgress) {
   try {
     onProgress('Chargement de la page de connexion...');
@@ -61,6 +61,7 @@ async function loginAndFetch(login, password, onProgress) {
 
     const results = [];
     for (const station of stations) {
+      
       onProgress(`Vérification des réservations pour : ${station.name}`);
       const reservationResponse = await instance.post(
         reservationUrl,
