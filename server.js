@@ -1,40 +1,33 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
-require('dotenv').config(); // Pour charger les variables d'environnement
+const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
-console.log('Using port:', process.env.PORT); // Ajoute cette ligne pour vérifier le port utilisé
-
 const port = process.env.PORT || 3001;
-const cors = require('cors');
-// Ajoutez ce middleware pour analyser les données JSON dans les requêtes
-app.use(express.json()); // <-- Cette ligne est nécessaire !
-app.use(cors());  // Cela autorise toutes les demandes CORS
-app.use(express.json()); // Pour parser les données JSON dans le corps de la requête
+
+app.use(express.json());
+app.use(cors());
 
 const loginUrl = 'https://planning.autocontrole.be/';
-const reservationUrl =
-  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b&oldReservationId=e76e98f9-4bda-410d-9035-163e6c772a24';
+const reservationUrl = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx';
 
 const instance = axios.create({
   baseURL: 'https://planning.autocontrole.be',
   headers: {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0',
     Referer: loginUrl,
   },
   withCredentials: true,
-  maxRedirects: 0,
-  validateStatus: function (status) {
-    return status <= 302;
-  },
+  validateStatus: (status) => status <= 302,
 });
 
 let cookies = [];
 
-async function loginAndFetch(login, password) {
+async function loginAndFetch(login, password, onProgress) {
   try {
-    // Étape 1 : Charger la page de connexion
+    onProgress('Chargement de la page de connexion...');
     const loginPage = await instance.get('/Login.aspx');
     const $ = cheerio.load(loginPage.data);
 
@@ -42,96 +35,53 @@ async function loginAndFetch(login, password) {
     const viewStateGenerator = $('input[name="__VIEWSTATEGENERATOR"]').val();
     const eventValidation = $('input[name="__EVENTVALIDATION"]').val();
 
-    // Étape 2 : Soumettre le formulaire de connexion avec les valeurs envoyées par le frontend
+    onProgress('Soumission du formulaire de connexion...');
     const loginResponse = await instance.post(
       '/Login.aspx',
       new URLSearchParams({
-        __EVENTTARGET: '',
-        __EVENTARGUMENT: '',
         __VIEWSTATE: viewState,
         __VIEWSTATEGENERATOR: viewStateGenerator,
         __EVENTVALIDATION: eventValidation,
-        txtUser: login, // Utilisation de la valeur envoyée par le frontend
-        txtPassWord: password, // Utilisation de la valeur envoyée par le frontend
+        txtUser: login,
+        txtPassWord: password,
         btnLogin: 'Se connecter',
       }),
       {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Referer: loginUrl,
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       }
     );
 
-    const loginCookies = loginResponse.headers['set-cookie'] || [];
-    cookies = cookies.concat(loginCookies);
-
-    // Étape 3 : Charger la page de réservation
-    const reservationPage = await instance.get(reservationUrl, {
-      headers: {
-        Cookie: cookies.join('; '),
-      },
-    });
-
-    const $reservation = cheerio.load(reservationPage.data);
-
-    const viewStateReservation = $reservation('input[name="__VIEWSTATE"]').val();
-    const viewStateGeneratorReservation = $reservation('input[name="__VIEWSTATEGENERATOR"]').val();
-    const eventValidationReservation = $reservation('input[name="__EVENTVALIDATION"]').val();
+    cookies = cookies.concat(loginResponse.headers['set-cookie'] || []);
+    onProgress('Connexion réussie. Chargement des réservations...');
 
     const stations = [
-      {
-        name: 'Schaerbeek',
-        target: 'ctl00$MainContent$rblStation$0',
-        id: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
-      },
-      {
-        name: 'Haren',
-        target: 'ctl00$MainContent$rblStation$1',
-        id: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
-      },
+      { name: 'Schaerbeek', target: 'ctl00$MainContent$rblStation$0' },
+      { name: 'Haren', target: 'ctl00$MainContent$rblStation$1' },
     ];
 
-    let results = [];
-    
-    // Collecter les données de réservation
+    const results = [];
     for (const station of stations) {
-      console.log(`\n--- Vérification pour la station : ${station.name} ---`);
-
+      onProgress(`Vérification des réservations pour : ${station.name}`);
       const reservationResponse = await instance.post(
         reservationUrl,
         {
           __EVENTTARGET: station.target,
-          __EVENTARGUMENT: '',
-          __VIEWSTATE: viewStateReservation,
-          __VIEWSTATEGENERATOR: viewStateGeneratorReservation,
-          __EVENTVALIDATION: eventValidationReservation,
-          VoertuigId: '16e825e6-e99c-41d2-8461-4e1460dc080b',
-          KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
-          KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b',
-          oldReservationId: 'e76e98f9-4bda-410d-9035-163e6c772a24',
-          ctl00$MainContent$rblStation: station.id,
+          __VIEWSTATE: viewState,
+          __VIEWSTATEGENERATOR: viewStateGenerator,
+          __EVENTVALIDATION: eventValidation,
         },
         {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Cookie: cookies.join('; '),
-            Referer: reservationUrl,
-          },
+          headers: { Cookie: cookies.join('; ') },
         }
       );
 
-      // Récupérer le HTML de la page de réservation
-      const pageHTML = reservationResponse.data;
-
-      // Renvoi du HTML complet dans la réponse
-      results.push({ station: station.name, html: pageHTML });
+      results.push({ station: station.name, html: reservationResponse.data });
     }
-    console.log('Réponse de réservation:', results); // Affichez les données avant de les renvoyer
+
+    onProgress('Toutes les réservations ont été récupérées.');
     return results;
-    
   } catch (error) {
-    console.error('Erreur dans la récupération des données:', error.response ? error.response.data : error.message);
+    onProgress('Erreur lors de la récupération des données.');
     throw error;
   }
 }
@@ -140,14 +90,24 @@ app.post('/fetch-reservations', async (req, res) => {
   const { login, password } = req.body;
 
   if (!login || !password) {
-      return res.status(400).json({ message: 'Login et mot de passe requis.' });
+    return res.status(400).json({ message: 'Login et mot de passe requis.' });
   }
 
+  const progressUpdates = [];
+  const onProgress = (message) => {
+    progressUpdates.push(message);
+    res.write(JSON.stringify({ progress: message }) + '\n'); // Envoi en temps réel
+  };
+
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+
   try {
-      const data = await loginAndFetch(login, password);
-      res.json({ success: true, data });
+    const data = await loginAndFetch(login, password, onProgress);
+    res.write(JSON.stringify({ success: true, data }) + '\n');
   } catch (error) {
-      res.status(500).json({ message: 'Erreur serveur : ' + error.message });
+    res.write(JSON.stringify({ success: false, error: error.message }) + '\n');
+  } finally {
+    res.end(); // Fin du streaming
   }
 });
 
