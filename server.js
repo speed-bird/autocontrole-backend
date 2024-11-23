@@ -24,7 +24,7 @@ const instance = axios.create({
 });
 
 let cookies = [];
-console.log("test");
+console.log(login);
 async function loginAndFetch(login, password, onProgress) {
   try {
     onProgress('Chargement de la page de connexion...');
