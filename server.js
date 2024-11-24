@@ -52,7 +52,7 @@ async function loginAndFetch(login, password, onProgress) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       }
     );
-
+    console.log(loginResponse.data);
     cookies = cookies.concat(loginResponse.headers['set-cookie'] || []);
     onProgress('Connexion réussie. Chargement des réservations...');
 
