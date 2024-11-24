@@ -85,9 +85,6 @@ async function getClientID(cookies) {
       headers: {
         Cookie: cookies.join('; '), // Formatage correct des cookies
       },
-      withCredentials: true,
-      maxRedirects: 0,
-      validateStatus: (status) => status <= 302,
     });
     
     const $ = cheerio.load(resaPage.data);
@@ -105,10 +102,20 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
-    console.log(response.data);
-    const location = response.headers['location'];
-    console.log('URL de redirection :', location);
-    return location;
+    // Récupérer l'URL dans l'attribut action du formulaire
+    const formAction = document.querySelector('form[name="aspnetForm"]').action;
+    const urlParams = new URLSearchParams(formAction.split('?')[1]);
+    const voertuigId = urlParams.get('VoertuigId');
+    const klantId = urlParams.get('KlantId');
+    const keuringsTypeId = urlParams.get('KeuringsTypeId');
+    const oldReservationId = urlParams.get('oldReservationId');
+
+    console.log('VoertuigId:', voertuigId);
+    console.log('KlantId:', klantId);
+    console.log('KeuringsTypeId:', keuringsTypeId);
+    console.log('OldReservationId:', oldReservationId);
+
+    return voertuigId;
 
     /*const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
