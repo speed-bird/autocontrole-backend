@@ -50,7 +50,7 @@ async function auth(username, password) {
   }
 }
 
-aasync function getResas(cookies) {
+async function getResas(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
   
   try {
