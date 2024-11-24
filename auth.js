@@ -103,18 +103,22 @@ async function getClientID(cookies) {
       },  
     });
     // Récupérer l'URL dans l'attribut action du formulaire
-    const formAction = document.querySelector('form[name="aspnetForm"]').action;
+    const formAction = $('form[name="aspnetForm"]').attr('action');
+
+    // Utiliser URLSearchParams pour extraire les paramètres
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
+
+    // Extraire les valeurs des paramètres
     const voertuigId = urlParams.get('VoertuigId');
     const klantId = urlParams.get('KlantId');
     const keuringsTypeId = urlParams.get('KeuringsTypeId');
     const oldReservationId = urlParams.get('oldReservationId');
 
+    // Afficher les résultats
     console.log('VoertuigId:', voertuigId);
     console.log('KlantId:', klantId);
     console.log('KeuringsTypeId:', keuringsTypeId);
     console.log('OldReservationId:', oldReservationId);
-
     return voertuigId;
 
     /*const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
