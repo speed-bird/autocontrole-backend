@@ -86,7 +86,10 @@ async function getClientID(cookies) {
         Cookie: cookies.join('; '), // Formatage correct des cookies
       },
     });
+    
     const $ = cheerio.load(resaPage.data);
+    console.log($.html()); // Affiche tout le HTML pour analyse
+
     const href = $('#ctl00_MainContent_gvAutokeuring_ctl02_lbRebook').attr('href');
     if (!href) {
       throw new Error("L'attribut href est introuvable.");
