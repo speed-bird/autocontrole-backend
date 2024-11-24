@@ -50,14 +50,17 @@ async function auth(username, password) {
   }
 }
 
-async function getResas(cookies, username, password) {
+async function getResas(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
   const resaPage = await axios.get(resaURL, {
     headers: {
       Cookie: cookies.join('; '),
     },
   });
-  return(resaPage.data);
+  const $ = cheerio.load(resaPage.data);
+  const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken]').attr('onclick');
+  const clientID = onClickValue.match(/KlantId=([\w-]+)/);
+  return(clientID[1]);
 }
 
 export { auth, getResas };
