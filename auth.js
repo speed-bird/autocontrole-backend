@@ -104,7 +104,7 @@ async function getClientID(cookies) {
     });
     const $2 = cheerio.load(response);
     // Récupérer l'URL dans l'attribut action du formulaire
-    const formAction = $('#container form[name="aspnetForm"]').attr('action');  // Cibler form dans container
+    const formAction = $2('#container form[name="aspnetForm"]').attr('action');  // Cibler form dans container
     console.log('Action du formulaire :', formAction);
     // Utiliser URLSearchParams pour extraire les paramètres
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
