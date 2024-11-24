@@ -1,8 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import login from './auth.js';  // Utilisation d'importation ESM
-
+import cors from 'cors';
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Remplacez par l'origine de votre front-end si nécessaire
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(bodyParser.json()); // Parse les requêtes JSON
 app.use(bodyParser.urlencoded({ extended: true })); // Parse les requêtes URL-encoded
 
