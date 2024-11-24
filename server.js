@@ -12,13 +12,10 @@ app.use(express.json());
 
 app.post('/login', (req, res) => {
   const { login, password } = req.body; 
-  if (login && password) {
-    console.log('Login:', login);
-    console.log('Password:', password);
-    res.send('Login successful');
-  } else {
-    res.status(400).send('Login or password missing');
-  }
+  console.log('Login:', login);
+  console.log('Password:', password);
+  res.send('Login successful');
+ 
 });
 
 app.listen(port, () => {
