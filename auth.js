@@ -102,10 +102,10 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
-    /*const $2 = cheerio.load(response);
+    const $2 = cheerio.load(response);
     // Récupérer l'URL dans l'attribut action du formulaire
-    const formAction = $2('form[name="aspnetForm"]').attr('action');
-    console.log('Action du formulaire:', formAction);
+    const formAction = $('#container form[name="aspnetForm"]').attr('action');  // Cibler form dans container
+    console.log('Action du formulaire :', formAction);
     // Utiliser URLSearchParams pour extraire les paramètres
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
 
@@ -122,7 +122,8 @@ async function getClientID(cookies) {
     console.log('OldReservationId:', oldReservationId);
     return voertuigId;
 
-    /*const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
+    /*
+    const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
       throw new Error('Attribut "onclick" introuvable dans la page HTML.');
     }
