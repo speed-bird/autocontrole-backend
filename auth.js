@@ -96,6 +96,7 @@ async function getClientID(cookies) {
     if (!match) {
       throw new Error("Impossible d'extraire les paramètres de __doPostBack.");
     }
+    console.log("Paramètres extraits :", { eventTarget, eventArgument }); // Debugging
     const eventTarget = match[1];
     const eventArgument = match[2] || '';
     const postData = new URLSearchParams({
