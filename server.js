@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body; 
-  console.log('Username:', userrname);
+  console.log('Username:', username);
   console.log('Password:', password);
   res.send('Login successful');
  
