@@ -31,6 +31,6 @@ app.post('/login', async (req, res) => {
 
 // Lancer le serveur
 const port = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Serveur lancé sur http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Serveur lancé sur http://localhost:${port}`);
 });
