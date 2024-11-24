@@ -88,24 +88,9 @@ async function getClientID(cookies) {
     });
     
     const $ = cheerio.load(resaPage.data);
-    console.log($.html()); // Affiche tout le HTML pour analyse
-
-    const href = $('#ctl00_MainContent_gvAutokeuring_ctl02_lbRebook').attr('href');
-    if (!href) {
-      throw new Error("L'attribut href est introuvable.");
-    }
-    // Extraire l'eventTarget de __doPostBack
-    console.log("Contenu de href :", href);
-    const match = href.match(/__doPostBack\('(.+?)','(.*?)'\)/);
-    if (!match) {
-      throw new Error("Impossible d'extraire les paramètres de __doPostBack. Le contenu du href est : " + href);
-    }
-    console.log("Paramètres extraits :", { eventTarget, eventArgument }); // Debugging
-    const eventTarget = match[1];
-    const eventArgument = match[2] || '';
     const postData = new URLSearchParams({
-      __EVENTTARGET: eventTarget,
-      __EVENTARGUMENT: eventArgument,
+      __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
+      __EVENTARGUMENT: '',
       __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
       __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
     });
