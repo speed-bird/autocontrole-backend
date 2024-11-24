@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
-import { login } from './auth.js';
+const login = require('./auth'); // Import de la fonction login
 
 const corsOptions = {
   methods: ['GET', 'POST'], // Définir les méthodes autorisées
