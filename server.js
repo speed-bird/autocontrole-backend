@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { auth, getResas } from './auth.js'
+import { auth, getClientID } from './auth.js'
 import cors from 'cors';
 const app = express();
 
@@ -21,7 +21,7 @@ app.post('/login', async (req, res) => {
   }
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
-    const resas = await getResas(cookies);
+    const resas = await getClientID(cookies);
     return res.status(200).json({ message: 'Login successful', resas });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
