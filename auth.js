@@ -93,8 +93,8 @@ async function getClientID(cookies) {
       __EVENTARGUMENT: '',
       __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
       __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
+      __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
     });
-
     // Faire une requête POST
     const response = await axios.post('https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx', postData, {
       headers: {
