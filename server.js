@@ -9,10 +9,10 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// Votre route ici
 app.post('/login', (req, res) => {
-  // Logique de votre route
-  res.send('Login successfullll');
+  const { login, password } = req.body; 
+  console.log(login);
+  res.send('Login successful'); 
 });
 
 app.listen(port, () => {
