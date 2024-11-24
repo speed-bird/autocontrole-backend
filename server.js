@@ -1,22 +1,22 @@
-import "./login.js"
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
+import { login } from './auth.mjs';
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
   methods: ['GET', 'POST'], // Définir les méthodes autorisées
   allowedHeaders: ['Content-Type', 'Authorization'], // Définir les en-têtes autorisés
 };
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body; 
   console.log('Username:', username);
   console.log('Password:', password);
-  res.send(login(username, password));
+  const cookies = await login(username, password);
+  res.send(cookies);
 });
 
 app.listen(port, () => {
