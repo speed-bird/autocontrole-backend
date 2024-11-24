@@ -87,7 +87,7 @@ async function getClientID(cookies) {
       },
     });
     
-    const $ = cheerio.load(resaPage.data);
+    let $ = cheerio.load(resaPage.data);
     const postData = new URLSearchParams({
       __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
       __EVENTARGUMENT: '',
@@ -102,6 +102,7 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
+    $ = cheerio.load(response);
     // Récupérer l'URL dans l'attribut action du formulaire
     const formAction = $('form[name="aspnetForm"]').attr('action');
     console.log($('form[name="aspnetForm"]').attr('action'));
