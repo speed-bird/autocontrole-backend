@@ -1,3 +1,4 @@
+import "./login.js"
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -14,8 +15,7 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body; 
   console.log('Username:', username);
   console.log('Password:', password);
-  res.send('Login successful');
- 
+  res.send(login(username, password));
 });
 
 app.listen(port, () => {
