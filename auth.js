@@ -87,6 +87,7 @@ async function getClientID(cookies) {
       },
       withCredentials: true,
       maxRedirects: 0,
+      validateStatus: (status) => status <= 302,
     });
     
     const $ = cheerio.load(resaPage.data);
