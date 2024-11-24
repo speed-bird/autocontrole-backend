@@ -96,9 +96,9 @@ async function getClientID(cookies) {
     }
     // Extraire l'eventTarget de __doPostBack
     console.log("Contenu de href :", href);
-    const match = href.match(/__doPostBack\(&#39;(.*?)&#39;,&#39;(.*?)&#39;\)/);
+    const match = href.match(/__doPostBack\('(.+?)','(.*?)'\)/);
     if (!match) {
-      throw new Error("Impossible d'extraire les paramètres de __doPostBack.");
+      throw new Error("Impossible d'extraire les paramètres de __doPostBack. Le contenu du href est : " + href);
     }
     console.log("Paramètres extraits :", { eventTarget, eventArgument }); // Debugging
     const eventTarget = match[1];
