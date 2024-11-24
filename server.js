@@ -1,17 +1,24 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const port = process.env.PORT || 3001;
 
-// Autoriser les requêtes venant de localhost:3000
-app.use(cors({
-  origin: 'http://localhost:3000', // Frontend URL
-}));
+// Configurer CORS
+const corsOptions = {
+  origin: 'http://localhost:3000', // Permet uniquement les requêtes de localhost:3000
+  methods: ['GET', 'POST'], // Définir les méthodes autorisées
+  allowedHeaders: ['Content-Type', 'Authorization'], // Définir les en-têtes autorisés
+};
 
-app.post('/your-endpoint', (req, res) => {
-  // Logique de traitement de la requête
-  res.json({ message: 'Réponse du backend' });
+// Utilisation de CORS avec la configuration
+app.use(cors(corsOptions));
+
+// Votre route ici
+app.post('/login', (req, res) => {
+  // Logique de votre route
+  res.send('Login successful');
 });
 
-app.listen(3001, () => {
-  console.log('Backend running on port 3001');
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
