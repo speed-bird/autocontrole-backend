@@ -8,6 +8,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'], // Définir les en-têtes autorisés
 };
 app.use(cors(corsOptions));
+app.use(express.json());
 
 app.post('/login', (req, res) => {
   const { login, password } = req.body; 
