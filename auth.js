@@ -52,7 +52,7 @@ async function auth(username, password) {
 
 async function getResas(cookies, username, password) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
-  const resaPage = await instance.get(resaURL, {
+  const resaPage = await axios.get(resaURL, {
     headers: {
       Cookie: cookies.join('; '),
     },
