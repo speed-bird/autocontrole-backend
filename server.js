@@ -1,15 +1,11 @@
-const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Configurer CORS
 const corsOptions = {
   methods: ['GET', 'POST'], // Définir les méthodes autorisées
   allowedHeaders: ['Content-Type', 'Authorization'], // Définir les en-têtes autorisés
 };
-
-// Utilisation de CORS avec la configuration
 app.use(cors(corsOptions));
 
 // Votre route ici
