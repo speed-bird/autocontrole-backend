@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
-async function login(username, password) {
+async function auth(username, password) {
   const loginUrl = 'https://planning.autocontrole.be/';
   const instance = axios.create({
     baseURL: 'https://planning.autocontrole.be',
@@ -41,7 +41,6 @@ async function login(username, password) {
         },
       }
     );
-
     const loginCookies = loginResponse.headers['set-cookie'] || [];
     cookies = cookies.concat(loginCookies);
     return cookies;
@@ -51,4 +50,14 @@ async function login(username, password) {
   }
 }
 
-export default login;  // Utilisation de 'export default' pour l'export.
+async function getResas(cookies, username, password) {
+  const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
+  const resaPage = await instance.get(resaURL, {
+    headers: {
+      Cookie: cookies.join('; '),
+    },
+  });
+  return(resaPage.data);
+}
+
+export { auth, getResas };

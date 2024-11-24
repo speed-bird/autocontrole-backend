@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import login from './auth.js';  // Utilisation d'importation ESM
+import { auth, getResas } from './auth.js'
 import cors from 'cors';
 const app = express();
 
@@ -19,16 +19,15 @@ app.post('/login', async (req, res) => {
   if (!username || !password) {
     return res.status(400).json({ error: 'Username or password missing' });
   }
-
   try {
-    const cookies = await login(username, password); // Appelle la fonction login
-    return res.status(200).json({ message: 'Login successful', cookies });
+    const cookies = await auth(username, password); // Appelle la fonction login
+    const resas = await getResas(cookies);
+    return res.status(200).json({ message: 'Login successful', resas });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
     return res.status(500).json({ error: 'Login failed', details: error.message });
   }
 });
-
 // Lancer le serveur
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
