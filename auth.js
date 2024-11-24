@@ -85,6 +85,8 @@ async function getClientID(cookies) {
       headers: {
         Cookie: cookies.join('; '), // Formatage correct des cookies
       },
+      withCredentials: true,
+      maxRedirects: 0,
     });
     
     const $ = cheerio.load(resaPage.data);
