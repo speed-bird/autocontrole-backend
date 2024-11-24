@@ -50,9 +50,8 @@ async function auth(username, password) {
   }
 }
 
-async function getResas(cookies) {
+async function getClientID(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
-  
   try {
     // Effectue la requête avec les cookies
     const resaPage = await axios.get(resaURL, {
@@ -60,28 +59,73 @@ async function getResas(cookies) {
         Cookie: cookies.join('; '), // Formatage correct des cookies
       },
     });
-
     const $ = cheerio.load(resaPage.data);
-
-    // Récupère l'attribut "onclick" du bouton
     const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
-
     if (!onClickValue) {
       throw new Error('Attribut "onclick" introuvable dans la page HTML.');
     }
-
-    // Extrait le KlantId
     const clientID = onClickValue.match(/KlantId=([\w-]+)/);
     if (!clientID || !clientID[1]) {
       throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
     }
-
-    return clientID[1]; // Retourne le KlantId
+    return clientID[1];
   } catch (error) {
     console.error('Erreur lors de la récupération des réservations :', error.message);
     throw error;
   }
 }
 
+async function getClientID(cookies) {
+  const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
+  try {
+    // Effectue la requête avec les cookies
+    const resaPage = await axios.get(resaURL, {
+      headers: {
+        Cookie: cookies.join('; '), // Formatage correct des cookies
+      },
+    });
+    const $ = cheerio.load(resaPage.data);
+    const href = $('#ctl00_MainContent_gvAutokeuring_ctl02_lbRebook').attr('href');
+    if (!href) {
+      throw new Error("L'attribut href est introuvable.");
+    }
+    // Extraire l'eventTarget de __doPostBack
+    const match = href.match(/__doPostBack\(&#39;(.*?)&#39;,&#39;(.*?)&#39;\)/);
+    if (!match) {
+      throw new Error("Impossible d'extraire les paramètres de __doPostBack.");
+    }
+    const eventTarget = match[1];
+    const eventArgument = match[2] || '';
+    const postData = new URLSearchParams({
+      __EVENTTARGET: eventTarget,
+      __EVENTARGUMENT: eventArgument,
+      __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
+      __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
+    });
 
-export { auth, getResas };
+    // Faire une requête POST
+    const response = await axios.post('https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx', postData, {
+      headers: {
+        Cookie: cookies.join('; '), // Formatage correct des cookies
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },  
+    });
+    return response.data;
+
+    /*const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
+    if (!onClickValue) {
+      throw new Error('Attribut "onclick" introuvable dans la page HTML.');
+    }
+    const clientID = onClickValue.match(/KlantId=([\w-]+)/);
+    if (!clientID || !clientID[1]) {
+      throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
+    }
+    return clientID[1];
+    */
+  } catch (error) {
+    console.error('Erreur lors de la récupération des réservations :', error.message);
+    throw error;
+  }
+
+
+export { auth, getClientID };
