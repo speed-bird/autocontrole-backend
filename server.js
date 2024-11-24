@@ -11,8 +11,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post('/login', (req, res) => {
-  const { login, password } = req.body; 
-  console.log('Login:', login);
+  const { username, password } = req.body; 
+  console.log('Username:', userrname);
   console.log('Password:', password);
   res.send('Login successful');
  
