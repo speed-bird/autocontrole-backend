@@ -97,11 +97,16 @@ app.post('/submit-login', (req, res) => {
     return res.status(400).json({ message: 'Login et mot de passe requis.' });
   }
 
-  const progressUpdates = [];
-  res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive' });
+  // Envoi de la réponse initiale pour établir la connexion SSE
+  res.writeHead(200, { 
+    'Content-Type': 'text/event-stream', 
+    'Cache-Control': 'no-cache', 
+    'Connection': 'keep-alive' 
+  });
 
+  // Fonction de mise à jour du progrès
   const onProgress = (message) => {
-    res.write(`data: ${JSON.stringify({ progress: message })}\n\n`); // Envoi des mises à jour en temps réel
+    res.write(`data: ${JSON.stringify({ progress: message })}\n\n`);
   };
 
   loginAndFetch(login, password, onProgress)
@@ -114,6 +119,7 @@ app.post('/submit-login', (req, res) => {
       res.end();
     });
 });
+
 
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
