@@ -50,7 +50,7 @@ async function auth(username, password) {
   }
 }
 
-async function getClientID(cookies) {
+/*async function getClientID(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
   try {
     // Effectue la requête avec les cookies
@@ -59,6 +59,8 @@ async function getClientID(cookies) {
         Cookie: cookies.join('; '), // Formatage correct des cookies
       },
     });
+    
+    
     const $ = cheerio.load(resaPage.data);
     const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
@@ -74,7 +76,7 @@ async function getClientID(cookies) {
     throw error;
   }
 }
-
+*/
 async function getClientID(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
   try {
