@@ -126,6 +126,6 @@ async function getClientID(cookies) {
     console.error('Erreur lors de la récupération des réservations :', error.message);
     throw error;
   }
-
+}
 
 export { auth, getClientID };
