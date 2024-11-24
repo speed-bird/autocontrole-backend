@@ -132,7 +132,7 @@ async function getClientID(cookies) {
       throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
     }
     */
-    return response.data;
+   
     
   } catch (error) {
       console.error('Erreur lors de la récupération des réservations :', error.message);
