@@ -11,8 +11,13 @@ app.use(cors(corsOptions));
 
 app.post('/login', (req, res) => {
   const { login, password } = req.body; 
-  console.log(login);
-  res.send('Login successful'); 
+  if (login && password) {
+    console.log('Login:', login);
+    console.log('Password:', password);
+    res.send('Login successful');
+  } else {
+    res.status(400).send('Login or password missing');
+  }
 });
 
 app.listen(port, () => {
