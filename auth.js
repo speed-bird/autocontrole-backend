@@ -102,7 +102,7 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
-    const $2 = cheerio.load(response);
+    /*const $2 = cheerio.load(response);
     // Récupérer l'URL dans l'attribut action du formulaire
     const formAction = $2('form[name="aspnetForm"]').attr('action');
     console.log('Action du formulaire:', formAction);
@@ -130,10 +130,11 @@ async function getClientID(cookies) {
     if (!clientID || !clientID[1]) {
       throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
     }
-    return clientID[1];
     */
+    return response.data;
+    
   } catch (error) {
-    console.error('Erreur lors de la récupération des réservations :', error.message);
+      console.error('Erreur lors de la récupération des réservations :', error.message);
     throw error;
   }
 }
