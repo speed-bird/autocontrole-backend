@@ -50,17 +50,38 @@ async function auth(username, password) {
   }
 }
 
-async function getResas(cookies) {
+aasync function getResas(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
-  const resaPage = await axios.get(resaURL, {
-    headers: {
-      Cookie: cookies.join('; '),
-    },
-  });
-  const $ = cheerio.load(resaPage.data);
-  const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken]').attr('onclick');
-  const clientID = onClickValue.match(/KlantId=([\w-]+)/);
-  return(clientID[1]);
+  
+  try {
+    // Effectue la requête avec les cookies
+    const resaPage = await axios.get(resaURL, {
+      headers: {
+        Cookie: cookies.join('; '), // Formatage correct des cookies
+      },
+    });
+
+    const $ = cheerio.load(resaPage.data);
+
+    // Récupère l'attribut "onclick" du bouton
+    const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
+
+    if (!onClickValue) {
+      throw new Error('Attribut "onclick" introuvable dans la page HTML.');
+    }
+
+    // Extrait le KlantId
+    const clientID = onClickValue.match(/KlantId=([\w-]+)/);
+    if (!clientID || !clientID[1]) {
+      throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
+    }
+
+    return clientID[1]; // Retourne le KlantId
+  } catch (error) {
+    console.error('Erreur lors de la récupération des réservations :', error.message);
+    throw error;
+  }
 }
+
 
 export { auth, getResas };
