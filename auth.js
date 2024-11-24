@@ -103,7 +103,7 @@ async function getClientID(cookies) {
       },  
     });
     const location = response.headers['location'];
-    
+    console.log('URL de redirection :', location);
     return location;
 
     /*const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
