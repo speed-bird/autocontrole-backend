@@ -104,6 +104,8 @@ async function getClientID(cookies) {
     });
     
     const $2 = cheerio.load(response);
+    return($2.html());
+    /*
     const formAction = $2('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
 
@@ -119,6 +121,7 @@ async function getClientID(cookies) {
     console.log('KeuringsTypeId:', keuringsTypeId);
     console.log('OldReservationId:', oldReservationId);
     return klantId;
+    */
     /*
     const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
