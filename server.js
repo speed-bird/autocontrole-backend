@@ -6,7 +6,7 @@ const app = express();
 
 app.use(cors({
   origin: 'http://localhost:3000', // Remplacez par l'origine de votre front-end si nécessaire
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(bodyParser.json()); // Parse les requêtes JSON
