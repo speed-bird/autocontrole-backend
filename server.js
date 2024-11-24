@@ -30,7 +30,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Lancer le serveur
-const PORT = 3001;
+const port = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Serveur lancé sur http://localhost:${PORT}`);
 });
