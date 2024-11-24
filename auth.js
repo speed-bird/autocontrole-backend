@@ -95,6 +95,7 @@ async function getClientID(cookies) {
       throw new Error("L'attribut href est introuvable.");
     }
     // Extraire l'eventTarget de __doPostBack
+    console.log("Contenu de href :", href);
     const match = href.match(/__doPostBack\(&#39;(.*?)&#39;,&#39;(.*?)&#39;\)/);
     if (!match) {
       throw new Error("Impossible d'extraire les paramètres de __doPostBack.");
