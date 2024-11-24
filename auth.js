@@ -102,7 +102,9 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
-    return response.data;
+    const location = response.headers['location'];
+    
+    return location;
 
     /*const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
