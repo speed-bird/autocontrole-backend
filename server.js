@@ -1,6 +1,6 @@
-import express from 'express';  // Utilisation de 'import'
-import bodyParser from 'body-parser'; // Utilisation de 'import'
-import login from './auth.js'; // Utilisation de 'import', n'oubliez pas l'extension .js
+import express from 'express';
+import bodyParser from 'body-parser';
+import login from './auth.js';  // Utilisation d'importation ESM
 
 const app = express();
 app.use(bodyParser.json()); // Parse les requêtes JSON

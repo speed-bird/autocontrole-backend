@@ -1,5 +1,5 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 async function login(username, password) {
   const loginUrl = 'https://planning.autocontrole.be/';
@@ -51,4 +51,4 @@ async function login(username, password) {
   }
 }
 
-module.exports = login;  // Utilisation de 'module.exports' pour l'export
+export default login;  // Utilisation de 'export default' pour l'export.
