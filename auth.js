@@ -105,6 +105,7 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
+    console.log(response.headers);
     const location = response.headers['location'];
     console.log('URL de redirection :', location);
     return location;
