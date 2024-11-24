@@ -90,23 +90,21 @@ async function loginAndFetch(login, password, onProgress) {
   }
 }
 
-app.post('/submit-login', (req, res) => {
+app.post('/login', (req, res) => {
   const { login, password } = req.body;
 
   if (!login || !password) {
     return res.status(400).json({ message: 'Login et mot de passe requis.' });
   }
 
-  // Envoi de la réponse initiale pour établir la connexion SSE
-  res.writeHead(200, { 
-    'Content-Type': 'text/event-stream', 
-    'Cache-Control': 'no-cache', 
-    'Connection': 'keep-alive' 
-  });
+  // Définir l'en-tête pour SSE
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders(); // Flush les en-têtes immédiatement
 
-  // Fonction de mise à jour du progrès
   const onProgress = (message) => {
-    res.write(`data: ${JSON.stringify({ progress: message })}\n\n`);
+    res.write(`data: ${JSON.stringify({ message })}\n\n`); // Envoi des messages au client
   };
 
   loginAndFetch(login, password, onProgress)
@@ -119,6 +117,7 @@ app.post('/submit-login', (req, res) => {
       res.end();
     });
 });
+
 
 
 app.listen(port, () => {
