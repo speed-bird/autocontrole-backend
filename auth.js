@@ -138,4 +138,4 @@ async function login(username, password) {
   }
 }
 
-login();
+module.exports = { login };
