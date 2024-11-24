@@ -102,13 +102,9 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
-    return response.data;
-    /*
+    
     const $2 = cheerio.load(response);
-    // Récupérer l'URL dans l'attribut action du formulaire
-    const formAction = $2('#container form[name="aspnetForm"]').attr('action');  // Cibler form dans container
-    console.log('Action du formulaire :', formAction);
-    // Utiliser URLSearchParams pour extraire les paramètres
+    const formAction = $2('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
 
     // Extraire les valeurs des paramètres
@@ -117,13 +113,12 @@ async function getClientID(cookies) {
     const keuringsTypeId = urlParams.get('KeuringsTypeId');
     const oldReservationId = urlParams.get('oldReservationId');
 
-    // Afficher les résultats
+    // Afficher les valeurs extraites
     console.log('VoertuigId:', voertuigId);
     console.log('KlantId:', klantId);
     console.log('KeuringsTypeId:', keuringsTypeId);
     console.log('OldReservationId:', oldReservationId);
-    */
-
+    return klantId;
     /*
     const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
