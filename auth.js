@@ -115,7 +115,7 @@ async function getHaren(cookies, ids) {
           },
         }
       );
-      const $ = cheerio.load(htmlContent);
+      $ = cheerio.load(htmlContent);
 
 // Créer un tableau pour stocker les résultats
       const results = [];
@@ -134,5 +134,5 @@ async function getHaren(cookies, ids) {
   throw error;
   }
 }
-*/
+
 export { auth, getIds };
