@@ -14,7 +14,7 @@ async function auth(username, password) {
       maxRedirects: 0,
       validateStatus: (status) => status <= 302,
     });
-    const cookies = [];
+    let cookies = [];
     const loginPage = await instance.get('/login.aspx');
     const $ = cheerio.load(loginPage.data);
     const searchParams = {};
@@ -58,7 +58,7 @@ async function getIds(authParams) {
       },
     });
     const response = await axios.post(
-      'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx', 
+      resaURL,
       new URLSearchParams({
         __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
         __EVENTARGUMENT: '',
