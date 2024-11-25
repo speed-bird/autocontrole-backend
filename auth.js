@@ -14,20 +14,21 @@ async function auth(username, password) {
       maxRedirects: 0,
       validateStatus: (status) => status <= 302,
     });
-    let cookies = [];
+    const cookies = [];
     const loginPage = await instance.get('/login.aspx');
     const $ = cheerio.load(loginPage.data);
-    const viewState = $('input[name="__VIEWSTATE"]').val();
-    const viewStateGenerator = $('input[name="__VIEWSTATEGENERATOR"]').val();
-    const eventValidation = $('input[name="__EVENTVALIDATION"]').val();
+    const searchParams = {};
+    searchParams.viewState = $('input[name="__VIEWSTATE"]').val();
+    searchParams.viewStateGenerator = $('input[name="__VIEWSTATEGENERATOR"]').val();
+    searchParams.eventValidation = $('input[name="__EVENTVALIDATION"]').val();
     const loginResponse = await instance.post(
       '/login.aspx',
       new URLSearchParams({
         __EVENTTARGET: '',
         __EVENTARGUMENT: '',
-        __VIEWSTATE: viewState,
-        __VIEWSTATEGENERATOR: viewStateGenerator,
-        __EVENTVALIDATION: eventValidation,
+        __VIEWSTATE: searchParams.viewState,
+        __VIEWSTATEGENERATOR: searchParams.viewStateGenerator,
+        __EVENTVALIDATION: searchParams.eventValidation,
         txtUser: username,
         txtPassWord: password,
         btnLogin: 'Se connecter',
@@ -41,40 +42,39 @@ async function auth(username, password) {
     );
     const loginCookies = loginResponse.headers['set-cookie'] || [];
     cookies = cookies.concat(loginCookies);
-    return cookies;
+    return { cookies, searchParams };
   } catch (error) {
       console.error('Erreur :', error.message);
     throw error;
   }
 }
 
-async function getIds(cookies) {
+async function getIds(authParams) {
   try {
     const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
     const resaPage = await axios.get(resaURL, {
       headers: {
-        Cookie: cookies.join('; '),
+        Cookie: authParams.cookies.join('; '),
       },
-    });
-    const $$ = cheerio.load(resaPage.data);
-    const postData = new URLSearchParams({
-      __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
-      __EVENTARGUMENT: '',
-      __VIEWSTATE: $$('input[name="__VIEWSTATE"]').val(),
-      __VIEWSTATEGENERATOR: $$('input[name="__VIEWSTATEGENERATOR"]').val(),
-      __EVENTVALIDATION: $$('input[name="__EVENTVALIDATION"]').val(),
     });
     const response = await axios.post(
       'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx', 
-      postData, {
+      new URLSearchParams({
+        __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
+        __EVENTARGUMENT: '',
+        __VIEWSTATE: authParams.searchParams.eventValidation,
+        __VIEWSTATEGENERATOR: authParams.searchParams.viewStateGenerator,
+        __EVENTVALIDATION: authParams.searchParams.eventValidation,
+      }),
+      {
         headers: {
-        Cookie: cookies.join('; '), // Formatage correct des cookies
-        'Content-Type': 'application/x-www-form-urlencoded',
-        },  
+          Cookie: cookies.join('; '), // Formatage correct des cookies
+          'Content-Type': 'application/x-www-form-urlencoded',
+          },  
       }
     );
-    const $$$ = cheerio.load(response.data);
-    const formAction = $$$('form').attr('action');
+    const $$ = cheerio.load(response.data);
+    const formAction = $$('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
     const voertuigId = urlParams.get('VoertuigId');
     const klantId = urlParams.get('KlantId');
@@ -93,5 +93,34 @@ async function getIds(cookies) {
     throw error;
   }
 }
+/*
+async function getHaren(cookies, ids) {
+  try {
+      rebookURL = 
+      'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?&'
+      +ids[0]+'&'+ids[1]+'&'+ids[2]+'&'+ids[3];
+      const harenHTML = await axios.post(rebookURL,
+        new URLSearchParams({
+          __EVENTTARGET: 'ctl00$MainContent$rblStation$1',
+          __EVENTARGUMENT: '',
+          __VIEWSTATE: $$('input[name="__VIEWSTATE"]').val(),
+          __VIEWSTATEGENERATOR: $$('input[name="__VIEWSTATEGENERATOR"]').val(),
+          __EVENTVALIDATION: $$('input[name="__EVENTVALIDATION"]').val(),
+        }),
+        {
+          headers: {
+            Cookie: cookies.join('; '),
+          },
+        }
+      );
+      const $$$$ = cheerio.load(harenHTML.data);
+      const formAction = $$$('form').attr('action');
 
+  }
+  catch (error) {
+    console.error('Erreur lors de la récupération des réservations :', error.message);
+  throw error;
+  }
+}
+*/
 export { auth, getIds };
