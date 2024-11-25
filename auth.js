@@ -45,12 +45,12 @@ async function auth(username, password) {
   }
 }
 
-async function getIds(authParams) {
+async function getIds(cookies) {
   try {
     const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
     const resaPage = await axios.get(resaURL, {
       headers: {
-        Cookie: authParams.cookies.join('; '),
+        Cookie: cookies.join('; '),
       },
     });
     $ = cheerio.load(resaPage.data);
@@ -65,7 +65,7 @@ async function getIds(authParams) {
       }),
       {
         headers: {
-          Cookie: authParams.cookies.join('; '), // Formatage correct des cookies
+          Cookie: cookies.join('; '), // Formatage correct des cookies
           'Content-Type': 'application/x-www-form-urlencoded',
           },  
       }
