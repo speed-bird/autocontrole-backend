@@ -118,7 +118,16 @@ async function getClientID(cookies) {
     console.log('KlantId:', klantId);
     console.log('KeuringsTypeId:', keuringsTypeId);
     console.log('OldReservationId:', oldReservationId);
-    return klantId;
+    
+    const result = {
+      voertuigId,
+      klantId,
+      keuringsTypeId,
+      oldReservationId
+  };
+  
+  // Retourner l'objet JSON
+  return JSON.stringify(result); 
     /*
     const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
     if (!onClickValue) {
