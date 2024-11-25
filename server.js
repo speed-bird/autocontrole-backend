@@ -1,6 +1,7 @@
 import express from 'express';
-import { auth, getClientID } from './auth.js'
+import { auth, getClientID } from './auth.js';
 import cors from 'cors';
+
 const app = express();
 
 app.use(cors({
@@ -8,6 +9,10 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Middlewares intégrés pour parser les données
+app.use(express.json()); // Parse les requêtes JSON
+app.use(express.urlencoded({ extended: true })); // Parse les requêtes URL-encoded
 
 // Route POST pour effectuer le login
 app.post('/login', async (req, res) => {
@@ -25,6 +30,7 @@ app.post('/login', async (req, res) => {
     return res.status(500).json({ error: 'Login failed', details: error.message });
   }
 });
+
 // Lancer le serveur
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
