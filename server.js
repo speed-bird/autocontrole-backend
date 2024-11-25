@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, getIds } from './auth.js';
+import { auth, getIds, getHaren } from './auth.js';
 import cors from 'cors';
 
 const app = express();
