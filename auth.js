@@ -58,6 +58,8 @@ async function getIds(authParams) {
       },
     });
     const $$$ = cheerio.load(resaPage.data);
+    console.log("dans le authparams = "+ authParams.searchParams.viewState+"\n");
+    console.log("dans le $$$('input[name=__VIEWSTATE]').val() = "+ $$$('input[name="__VIEWSTATE"]').val());
     const response = await axios.post(
       resaURL,
       new URLSearchParams({
