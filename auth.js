@@ -61,13 +61,13 @@ async function getClientID(cookies) {
       },
     });
     
-    const $$ = cheerio.load(resaPage.data);
+    
     const postData = new URLSearchParams({
       __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
       __EVENTARGUMENT: '',
-      __VIEWSTATE: $$('input[name="__VIEWSTATE"]').val(),
-      __VIEWSTATEGENERATOR: $$('input[name="__VIEWSTATEGENERATOR"]').val(),
-      __EVENTVALIDATION: $$('input[name="__EVENTVALIDATION"]').val(),
+      __VIEWSTATE: viewState,
+      __VIEWSTATEGENERATOR: viewStateGenerator,
+      __EVENTVALIDATION: eventValidation,
     });
     // Faire une requête POST
     const response = await axios.post('https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx', postData, {
@@ -76,7 +76,7 @@ async function getClientID(cookies) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },  
     });
-    
+    const $$ = cheerio.load(response.data);
     const formAction = $$('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
     const voertuigId = urlParams.get('VoertuigId');
