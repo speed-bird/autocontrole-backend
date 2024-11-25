@@ -68,7 +68,7 @@ async function getIds(authParams) {
       }),
       {
         headers: {
-          Cookie: cookies.join('; '), // Formatage correct des cookies
+          Cookie: authParams.cookies.join('; '), // Formatage correct des cookies
           'Content-Type': 'application/x-www-form-urlencoded',
           },  
       }
