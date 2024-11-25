@@ -90,19 +90,24 @@ async function getIds(cookies) {
     throw error;
   }
 }
-/*
+
 async function getHaren(cookies, ids) {
   try {
-      rebookURL = 
-      'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?&'
-      +ids[0]+'&'+ids[1]+'&'+ids[2]+'&'+ids[3];
+      const resaURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
+      const resaPage = await axios.get(resaURL, {
+        headers: {
+          Cookie: cookies.join('; '),
+        },
+      });
+      let $ = cheerio.load(resaPage.data);
+      const rebookURL = resaURL + ids[0] + '&' + ids[1] + '&' + ids[2] + '&' + ids[3];
       const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
           __EVENTTARGET: 'ctl00$MainContent$rblStation$1',
           __EVENTARGUMENT: '',
-          __VIEWSTATE: $$('input[name="__VIEWSTATE"]').val(),
-          __VIEWSTATEGENERATOR: $$('input[name="__VIEWSTATEGENERATOR"]').val(),
-          __EVENTVALIDATION: $$('input[name="__EVENTVALIDATION"]').val(),
+          __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
+          __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
+          __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
         }),
         {
           headers: {
@@ -110,9 +115,19 @@ async function getHaren(cookies, ids) {
           },
         }
       );
-      const $$$$ = cheerio.load(harenHTML.data);
-      const formAction = $$$('form').attr('action');
+      const $ = cheerio.load(htmlContent);
 
+// Créer un tableau pour stocker les résultats
+      const results = [];
+      // Sélectionner tous les éléments span avec l'ID
+      $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
+          const span = $(element); // Convertir l'élément courant en objet Cheerio
+          const date = span.attr('title'); // Récupérer l'attribut title
+          const time = span.find('label').text(); // Récupérer le texte du label
+          // Ajouter un objet au tableau des résultats
+          results.push({ date, time });
+      });
+      return (results);
   }
   catch (error) {
     console.error('Erreur lors de la récupération des réservations :', error.message);
