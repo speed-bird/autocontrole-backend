@@ -50,33 +50,7 @@ async function auth(username, password) {
   }
 }
 
-/*async function getClientID(cookies) {
-  const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
-  try {
-    // Effectue la requête avec les cookies
-    const resaPage = await axios.get(resaURL, {
-      headers: {
-        Cookie: cookies.join('; '), // Formatage correct des cookies
-      },
-    });
-    
-    
-    const $ = cheerio.load(resaPage.data);
-    const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
-    if (!onClickValue) {
-      throw new Error('Attribut "onclick" introuvable dans la page HTML.');
-    }
-    const clientID = onClickValue.match(/KlantId=([\w-]+)/);
-    if (!clientID || !clientID[1]) {
-      throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
-    }
-    return clientID[1];
-  } catch (error) {
-    console.error('Erreur lors de la récupération des réservations :', error.message);
-    throw error;
-  }
-}
-*/
+
 async function getClientID(cookies) {
   const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
   try {
@@ -87,13 +61,13 @@ async function getClientID(cookies) {
       },
     });
     
-    const $ = cheerio.load(resaPage.data);
+    const $$ = cheerio.load(resaPage.data);
     const postData = new URLSearchParams({
       __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
       __EVENTARGUMENT: '',
-      __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
-      __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
-      __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
+      __VIEWSTATE: $$('input[name="__VIEWSTATE"]').val(),
+      __VIEWSTATEGENERATOR: $$('input[name="__VIEWSTATEGENERATOR"]').val(),
+      __EVENTVALIDATION: $$('input[name="__EVENTVALIDATION"]').val(),
     });
     // Faire une requête POST
     const response = await axios.post('https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx', postData, {
@@ -103,8 +77,8 @@ async function getClientID(cookies) {
       },  
     });
     
-    $ = cheerio.load(response.data);
-    const formAction = $('form').attr('action');
+    $$ = cheerio.load(response.data);
+    const formAction = $$('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
     const voertuigId = urlParams.get('VoertuigId');
     const klantId = urlParams.get('KlantId');
@@ -129,16 +103,3 @@ async function getClientID(cookies) {
 }
 
 export { auth, getClientID };
-
-
-
-    /* TROUVER CLIENT ID APD PAGE DE RESAS :
-    const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
-    if (!onClickValue) {
-      throw new Error('Attribut "onclick" introuvable dans la page HTML.');
-    }
-    const clientID = onClickValue.match(/KlantId=([\w-]+)/);
-    if (!clientID || !clientID[1]) {
-      throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
-    }
-    */
