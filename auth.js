@@ -16,19 +16,15 @@ async function auth(username, password) {
     });
     let cookies = [];
     const loginPage = await instance.get('/login.aspx');
-    const $ = cheerio.load(loginPage.data);
-    const searchParams = {};
-    searchParams.viewState = $('input[name="__VIEWSTATE"]').val();
-    searchParams.viewStateGenerator = $('input[name="__VIEWSTATEGENERATOR"]').val();
-    searchParams.eventValidation = $('input[name="__EVENTVALIDATION"]').val();
+    let $ = cheerio.load(loginPage.data);
     const loginResponse = await instance.post(
       '/login.aspx',
       new URLSearchParams({
         __EVENTTARGET: '',
         __EVENTARGUMENT: '',
-        __VIEWSTATE: searchParams.viewState,
-        __VIEWSTATEGENERATOR: searchParams.viewStateGenerator,
-        __EVENTVALIDATION: searchParams.eventValidation,
+        __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
+        __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
+        __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
         txtUser: username,
         txtPassWord: password,
         btnLogin: 'Se connecter',
@@ -42,7 +38,7 @@ async function auth(username, password) {
     );
     const loginCookies = loginResponse.headers['set-cookie'] || [];
     cookies = cookies.concat(loginCookies);
-    return { cookies, searchParams };
+    return (cookies);
   } catch (error) {
       console.error('Erreur :', error.message);
     throw error;
@@ -57,17 +53,15 @@ async function getIds(authParams) {
         Cookie: authParams.cookies.join('; '),
       },
     });
-    const $$$ = cheerio.load(resaPage.data);
-    console.log("dans le authparams = "+ authParams.searchParams.viewState+"\n");
-    console.log("dans le $$$('input[name=__VIEWSTATE]').val() = "+ $$$('input[name="__VIEWSTATE"]').val());
+    $ = cheerio.load(resaPage.data);
     const response = await axios.post(
       resaURL,
       new URLSearchParams({
         __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
         __EVENTARGUMENT: '',
-        __VIEWSTATE: $$$('input[name="__VIEWSTATE"]').val(),
-        __VIEWSTATEGENERATOR: $$$('input[name="__VIEWSTATEGENERATOR"]').val(),
-        __EVENTVALIDATION: $$$('input[name="__EVENTVALIDATION"]').val(),
+        __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
+        __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
+        __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
       }),
       {
         headers: {
@@ -76,8 +70,8 @@ async function getIds(authParams) {
           },  
       }
     );
-    const $$ = cheerio.load(response.data);
-    const formAction = $$('form').attr('action');
+    $ = cheerio.load(response.data);
+    const formAction = $('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
     const voertuigId = urlParams.get('VoertuigId');
     const klantId = urlParams.get('KlantId');

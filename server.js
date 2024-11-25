@@ -24,7 +24,8 @@ app.post('/login', async (req, res) => {
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
     const ids = await getIds(cookies);
-    return res.status(200).json({ message: 'Login successful', ids });
+    // const haren = await getHaren(ids, cookies);
+    return res.status(200).json({ message: 'Login successful', haren });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
     return res.status(500).json({ error: 'Login failed', details: error.message });
