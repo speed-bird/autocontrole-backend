@@ -77,7 +77,6 @@ async function getClientID(cookies) {
       },  
     });
     
-    $$ = cheerio.load(response.data);
     const formAction = $$('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
     const voertuigId = urlParams.get('VoertuigId');
