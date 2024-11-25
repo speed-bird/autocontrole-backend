@@ -1,8 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
-
-let cookies = [];
 async function auth(username, password) {
   try {
     const loginUrl = 'https://planning.autocontrole.be/';
@@ -16,7 +14,7 @@ async function auth(username, password) {
       maxRedirects: 0,
       validateStatus: (status) => status <= 302,
     });
-    
+    let cookies = [];
     const loginPage = await instance.get('/login.aspx');
     const $ = cheerio.load(loginPage.data);
     const loginResponse = await instance.post(
@@ -38,7 +36,8 @@ async function auth(username, password) {
         },
       }
     );
-    const loginCookies = loginResponse.headers['set-cookie'] || [];
+    const loginCookies = (loginResponse.headers['set-cookie'] || []).map(cookie => cookie.split(';')[0]);
+
     cookies = cookies.concat(loginCookies);
     return (cookies);
   } catch (error) {
@@ -50,11 +49,12 @@ async function auth(username, password) {
 async function getIds(cookies) {
   try {
     const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
-    const resaPage = await axios.get(resaURL, {
-      headers: {
-        Cookie: cookies.join('; '),
-      },
-    });
+    const resaPage = await axios.get(resaURL, 
+      {
+        headers: {
+          Cookie: cookies.join('; '),
+        },
+      });
     let $ = cheerio.load(resaPage.data);
     const response = await axios.post(
       resaURL,
@@ -117,7 +117,7 @@ async function getHaren(cookies, ids) {
           },
         }
       );
-      $ = cheerio.load(htmlContent);
+      $ = cheerio.load(harenHTML);
 
 // Créer un tableau pour stocker les résultats
       const results = [];
