@@ -16,7 +16,7 @@ async function auth(username, password) {
     });
     let cookies = [];
     const loginPage = await instance.get('/login.aspx');
-    let $ = cheerio.load(loginPage.data);
+    const $ = cheerio.load(loginPage.data);
     const loginResponse = await instance.post(
       '/login.aspx',
       new URLSearchParams({
@@ -53,7 +53,7 @@ async function getIds(cookies) {
         Cookie: cookies.join('; '),
       },
     });
-    $ = cheerio.load(resaPage.data);
+    let $ = cheerio.load(resaPage.data);
     const response = await axios.post(
       resaURL,
       new URLSearchParams({
