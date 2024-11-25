@@ -57,14 +57,15 @@ async function getIds(authParams) {
         Cookie: authParams.cookies.join('; '),
       },
     });
+    const $$$ = cheerio.load(resaPage.data);
     const response = await axios.post(
       resaURL,
       new URLSearchParams({
         __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
         __EVENTARGUMENT: '',
-        __VIEWSTATE: authParams.searchParams.eventValidation,
-        __VIEWSTATEGENERATOR: authParams.searchParams.viewStateGenerator,
-        __EVENTVALIDATION: authParams.searchParams.eventValidation,
+        __VIEWSTATE: $$$('input[name="__VIEWSTATE"]').val(),
+        __VIEWSTATEGENERATOR: $$$('input[name="__VIEWSTATEGENERATOR"]').val(),
+        __EVENTVALIDATION: $$$('input[name="__EVENTVALIDATION"]').val(),
       }),
       {
         headers: {
