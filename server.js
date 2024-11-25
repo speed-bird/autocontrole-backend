@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, getClientID } from './auth.js';
+import { auth, getIds } from './auth.js';
 import cors from 'cors';
 
 const app = express();
@@ -23,14 +23,13 @@ app.post('/login', async (req, res) => {
   }
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
-    const resas = await getClientID(cookies);
-    return res.status(200).json({ message: 'Login successful', resas });
+    const ids = await getIds(cookies);
+    return res.status(200).json({ message: 'Login successful', ids });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
     return res.status(500).json({ error: 'Login failed', details: error.message });
   }
 });
-
 // Lancer le serveur
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
