@@ -103,7 +103,7 @@ async function getHaren(cookies, ids) {
       const rebookURL = resaURL + ids[0] + '&' + ids[1] + '&' + ids[2] + '&' + ids[3];
       const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
-          __EVENTTARGET: 'ctl00$MainContent$rblStation$1',
+          __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
           __EVENTARGUMENT: '',
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
@@ -135,4 +135,4 @@ async function getHaren(cookies, ids) {
   }
 }
 
-export { auth, getIds };
+export { auth, getIds, getHaren };
