@@ -103,21 +103,13 @@ async function getClientID(cookies) {
       },  
     });
     
-    const $2 = cheerio.load(response.data);
-    const formAction = $2('form').attr('action');
+    $ = cheerio.load(response.data);
+    const formAction = $('form').attr('action');
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
-
-    // Extraire les valeurs des paramètres
     const voertuigId = urlParams.get('VoertuigId');
     const klantId = urlParams.get('KlantId');
     const keuringsTypeId = urlParams.get('KeuringsTypeId');
     const oldReservationId = urlParams.get('oldReservationId');
-
-    // Afficher les valeurs extraites
-    console.log('VoertuigId:', voertuigId);
-    console.log('KlantId:', klantId);
-    console.log('KeuringsTypeId:', keuringsTypeId);
-    console.log('OldReservationId:', oldReservationId);
     
     const result = {
       voertuigId,
@@ -126,18 +118,8 @@ async function getClientID(cookies) {
       oldReservationId
   };
   
-  // Retourner l'objet JSON
-  return JSON.stringify(result); 
-    /*
-    const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
-    if (!onClickValue) {
-      throw new Error('Attribut "onclick" introuvable dans la page HTML.');
-    }
-    const clientID = onClickValue.match(/KlantId=([\w-]+)/);
-    if (!clientID || !clientID[1]) {
-      throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
-    }
-    */
+  return (result); 
+
    
     
   } catch (error) {
@@ -147,3 +129,16 @@ async function getClientID(cookies) {
 }
 
 export { auth, getClientID };
+
+
+
+    /* TROUVER CLIENT ID APD PAGE DE RESAS :
+    const onClickValue = $('input[name="ctl00$MainContent$cmdReservatieAutokeuringAanmaken"]').attr('onclick');
+    if (!onClickValue) {
+      throw new Error('Attribut "onclick" introuvable dans la page HTML.');
+    }
+    const clientID = onClickValue.match(/KlantId=([\w-]+)/);
+    if (!clientID || !clientID[1]) {
+      throw new Error('"KlantId" introuvable dans l\'attribut "onclick".');
+    }
+    */
