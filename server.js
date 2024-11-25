@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import { auth, getClientID } from './auth.js'
 import cors from 'cors';
 const app = express();
@@ -9,8 +8,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-app.use(bodyParser.json()); // Parse les requêtes JSON
-app.use(bodyParser.urlencoded({ extended: true })); // Parse les requêtes URL-encoded
 
 // Route POST pour effectuer le login
 app.post('/login', async (req, res) => {
