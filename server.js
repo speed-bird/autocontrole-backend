@@ -18,7 +18,7 @@ app.post('/login', async (req, res) => {
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
     const main = await getMain(cookies);
-    const bookings = await getBookings(main);
+    const bookings = getBookings(main);
     return res.status(200).json({ message: 'Login successful', bookings });
   } 
   catch (error) {
@@ -28,7 +28,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Route pour la nouvelle action
-app.post('/find-slots', (req, res) => {
+app.post('/find-slots', async (req, res) => {
   const data = req.body;
   try {
     const ids = await reBookIds(cookies);
