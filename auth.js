@@ -47,7 +47,7 @@ async function auth(username, password) {
   }
 }
 
-async function main(cookies) {
+async function getMain(cookies) {
   const mainURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
     const mainPage = await axios.get(mainURL, 
       {
@@ -63,7 +63,7 @@ async function main(cookies) {
           model: $(element).closest("td").next().text().trim() });
       });
     console.log(cars);
-    
+
     if (!foundBooking) {
         console.log("No booking found");
     }
@@ -163,4 +163,4 @@ async function getHaren(cookies, ids) {
   }
 }
 
-export { auth, main, reBookIds, getHaren };
+export { auth, getMain, reBookIds, getHaren };
