@@ -60,7 +60,7 @@ async function main(cookies) {
       foundBooking = true;
       cars.push(
         { plaque: $(element).closest("td").prev().text().trim(),
-          model = $(element).closest("td").next().text().trim() });
+          model: $(element).closest("td").next().text().trim() });
       });
     console.log(cars);
     if (!foundBooking) {
