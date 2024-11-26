@@ -4,11 +4,7 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors({
-  methods: ['GET', 'POST', 'OPTIONS'],
-}));
-
-// Middlewares intégrés pour parser les données
+app.use(cors({methods: ['GET', 'POST', 'OPTIONS']}));
 app.use(express.json()); // Parse les requêtes JSON
 app.use(express.urlencoded({ extended: true })); // Parse les requêtes URL-encoded
 
@@ -23,16 +19,30 @@ app.post('/login', async (req, res) => {
     const cookies = await auth(username, password); // Appelle la fonction login
     const main = await getMain(cookies);
     const bookings = await getBookings(main);
-    const ids = await reBookIds(cookies);
-    console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
-    const haren = await getHaren(cookies, ids);
-    console.log("Haren = "+haren);
     return res.status(200).json({ message: 'Login successful', bookings });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
     return res.status(500).json({ error: 'Login failed', details: error.message });
   }
 });
+
+// Route pour la nouvelle action
+app.post('/find-slots', (req, res) => {
+  const data = req.body;
+  try {
+    const ids = await reBookIds(cookies);
+    console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
+    const haren = await getHaren(cookies, ids);
+    console.log("Haren = "+haren);
+    res.json({ message: 'Nouvelle action traitée', data });
+  }
+  catch (error) {
+    console.error('Erreur lors de la connexion :', error.message);
+    return res.status(500).json({ error: 'Login failed', details: error.message });
+  }
+});
+
 // Lancer le serveur
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
