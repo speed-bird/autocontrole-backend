@@ -52,10 +52,10 @@ async function getMain(cookies) {
 }
 
 function getBookings (mainPage) {
-  const cars = [];
+  const bookings = [];
   let $ = cheerio.load(mainPage.data);
   $('a[id*="lbRebook"]').each((index, element) => {
-    cars.push(
+    bookings.push(
       { date: $(element).closest("tr").find("td:nth-child(3)").text().trim(),
         time: $(element).closest("tr").find("td:nth-child(4)").text().trim(),
         location: $(element).closest("tr").find("td:nth-child(5)").text().trim(),
@@ -63,7 +63,7 @@ function getBookings (mainPage) {
         model: $(element).closest("tr").find("td:nth-child(7)").text().trim()
     })}
   );
-  return (cars);
+  return (bookings);
 }
 
 async function reBookIds(cookies) {
