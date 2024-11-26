@@ -63,8 +63,9 @@ async function getMain(cookies) {
           time: $(element).closest("tr").find("td:nth-child(3)").text().trim(),
           location: $(element).closest("tr").find("td:nth-child(4)").text().trim(),
           plate: $(element).closest("tr").find("td:nth-child(5)").text().trim(),
-          model: $(element).closest("tr").find("td:nth-child(6)").text().trim(),
-      });
+          model: $(element).closest("tr").find("td:nth-child(6)").text().trim()
+      })}
+    );
     console.log(cars);
 
     if (!foundBooking) {
