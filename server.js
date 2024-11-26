@@ -4,7 +4,11 @@ import cors from 'cors';
 
 const app = express();
 
-
+app.use(cors({
+  
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Middlewares intégrés pour parser les données
 app.use(express.json()); // Parse les requêtes JSON
