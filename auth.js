@@ -59,8 +59,11 @@ async function getMain(cookies) {
     $('a[id*="lbRebook"]').each((index, element) => {
       foundBooking = true;
       cars.push(
-        { plaque: $(element).closest("td").prev().text().trim(),
-          model: $(element).closest("td").next().text().trim() });
+        { date: $(element).closest("tr").find("td:nth-child(2)").text().trim(),
+          time: $(element).closest("tr").find("td:nth-child(3)").text().trim(),
+          location: $(element).closest("tr").find("td:nth-child(4)").text().trim(),
+          plate: $(element).closest("tr").find("td:nth-child(5)").text().trim(),
+          model: $(element).closest("tr").find("td:nth-child(6)").text().trim(),
       });
     console.log(cars);
 
