@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-const foundBooking = false;
+let foundBooking = false;
 const cars = [];
 
 async function auth(username, password) {
