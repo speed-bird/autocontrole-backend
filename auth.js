@@ -63,6 +63,7 @@ async function main(cookies) {
           model: $(element).closest("td").next().text().trim() });
       });
     console.log(cars);
+    
     if (!foundBooking) {
         console.log("No booking found");
     }
