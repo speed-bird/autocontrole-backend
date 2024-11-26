@@ -14,6 +14,7 @@ async function auth(username, password) {
       maxRedirects: 0,
       validateStatus: (status) => status <= 302,
     });
+    let cookies = [];
     const loginPage = await instance.get('/login.aspx');
     const $ = cheerio.load(loginPage.data);
     const loginResponse = await instance.post(
