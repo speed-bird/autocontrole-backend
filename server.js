@@ -31,6 +31,7 @@ app.post('/login', async (req, res) => {
 app.post('/find-slots', async (req, res) => {
   const { cookies } = req.body;
   try {
+    console.log(cookies);
     const ids = await reBookIds(cookies);
     console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
     const haren = await getHaren(cookies, ids);
