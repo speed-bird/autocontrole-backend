@@ -51,7 +51,7 @@ async function getMain(cookies) {
     return (mainPage);
 }
 
-function checkBookings (mainPage) {
+function getBookings (mainPage) {
   const cars = [];
   let $ = cheerio.load(mainPage.data);
   $('a[id*="lbRebook"]').each((index, element) => {
@@ -137,4 +137,4 @@ async function getHaren(cookies, ids) {
   }
 }
 
-export { auth, getMain, reBookIds, getHaren };
+export { auth, getMain, getBookings, reBookIds, getHaren };
