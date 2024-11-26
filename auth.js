@@ -121,14 +121,11 @@ async function getHaren(cookies, ids) {
       );
       $ = cheerio.load(harenHTML);
       console.log("harenHTML = "+harenHTML);
-// Créer un tableau pour stocker les résultats
       const results = [];
-      // Sélectionner tous les éléments span avec l'ID
       $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
-          const span = $(element); // Convertir l'élément courant en objet Cheerio
-          const date = span.attr('title'); // Récupérer l'attribut title
-          const time = span.find('label').text(); // Récupérer le texte du label
-          // Ajouter un objet au tableau des résultats
+          const span = $(element);
+          const date = span.attr('title'); 
+          const time = span.find('label').text(); 
           results.push({ date, time });
       });
       console.log(results);
