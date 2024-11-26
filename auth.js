@@ -1,5 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+const foundBooking = false;
+const cars = [];
 
 async function auth(username, password) {
   try {
@@ -37,7 +39,6 @@ async function auth(username, password) {
       }
     );
     const loginCookies = (loginResponse.headers['set-cookie'] || []).map(cookie => cookie.split(';')[0]);
-
     cookies = cookies.concat(loginCookies);
     return (cookies);
   } catch (error) {
@@ -46,7 +47,30 @@ async function auth(username, password) {
   }
 }
 
-async function getIds(cookies) {
+async function main(cookies) {
+  const mainURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
+    const mainPage = await axios.get(mainURL, 
+      {
+        headers: {
+          Cookie: cookies.join('; '),
+        },
+      });
+    let $ = cheerio.load(mainPage.data);
+    $('a[id*="lbRebook"]').each((index, element) => {
+      foundBooking = true;
+      cars.push(
+        { plaque: $(element).closest("td").prev().text().trim(),
+          model = $(element).closest("td").next().text().trim() });
+      });
+    console.log(cars);
+    if (!foundBooking) {
+        console.log("No booking found");
+    }
+    
+}
+
+
+async function reBookIds(cookies) {
   try {
     const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
     const resaPage = await axios.get(resaURL, 
@@ -138,4 +162,4 @@ async function getHaren(cookies, ids) {
   }
 }
 
-export { auth, getIds, getHaren };
+export { auth, main, reBookIds, getHaren };
