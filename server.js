@@ -19,7 +19,7 @@ app.post('/login', async (req, res) => {
     const cookies = await auth(username, password); // Appelle la fonction login
     const main = await getMain(cookies);
     const bookings = getBookings(main);
-    return res.status(200).json({ message: 'Login successful', bookings });
+    return res.status(200).json({ message: 'Login successful', bookings, cookies });
   } 
   catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
@@ -28,8 +28,8 @@ app.post('/login', async (req, res) => {
 });
 
 // Route pour la nouvelle action
-app.get('/find-slots', async (req, res) => {
-  const data = req.body;
+app.post('/find-slots', async (req, res) => {
+  const { cookies } = req.body;
   try {
     const ids = await reBookIds(cookies);
     console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
