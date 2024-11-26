@@ -29,13 +29,13 @@ app.post('/login', async (req, res) => {
 
 // Route pour la nouvelle action
 app.post('/find-slots', async (req, res) => {
-  const { cookies } = req.body;
+  const { selectedReservation, cookies } = req.body;
   try {
-    console.log(cookies);
-    const ids = await reBookIds(cookies);
-    console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
-    const haren = await getHaren(cookies, ids);
-    console.log("Haren = "+haren);
+    console.log("Reservation selected = " + selectedReservation);
+    // const ids = await reBookIds(cookies);
+    // console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
+    // const haren = await getHaren(cookies, ids);
+    // console.log("Haren = "+haren);
     res.json({ message: 'Nouvelle action traitée', data });
   }
   catch (error) {
