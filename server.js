@@ -24,7 +24,7 @@ app.post('/login', async (req, res) => {
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
     const ids = await getIds(cookies);
-    console.log("IDS = "+ids);
+    console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
     const haren = await getHaren(cookies, ids);
     console.log("Haren = "+haren);
     return res.status(200).json({ message: 'Login successful', haren });
