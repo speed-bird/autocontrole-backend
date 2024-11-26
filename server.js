@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, getIds, getHaren } from './auth.js';
+import { auth, getMain, reBookIds, getHaren } from './auth.js';
 import cors from 'cors';
 
 const app = express();
@@ -23,7 +23,8 @@ app.post('/login', async (req, res) => {
   }
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
-    const ids = await getIds(cookies);
+    const main = await getMain(cookies);
+    const ids = await reBookIds(cookies);
     console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
     const haren = await getHaren(cookies, ids);
     console.log("Haren = "+haren);
