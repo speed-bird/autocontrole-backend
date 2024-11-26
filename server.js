@@ -28,7 +28,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Route pour la nouvelle action
-app.post('/find-slots', async (req, res) => {
+app.get('/find-slots', async (req, res) => {
   const data = req.body;
   try {
     const ids = await reBookIds(cookies);
