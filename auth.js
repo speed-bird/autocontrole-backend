@@ -118,7 +118,7 @@ async function getHaren(cookies, ids) {
         }
       );
       $ = cheerio.load(harenHTML);
-
+      console.log("harenHTML = "+harenHTML);
 // Créer un tableau pour stocker les résultats
       const results = [];
       // Sélectionner tous les éléments span avec l'ID
@@ -129,7 +129,8 @@ async function getHaren(cookies, ids) {
           // Ajouter un objet au tableau des résultats
           results.push({ date, time });
       });
-      return (results);
+      console.log(results);
+      return ("Results = "+results);
   }
   catch (error) {
     console.error('Erreur lors de la récupération des réservations :', error.message);
