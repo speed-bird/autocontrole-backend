@@ -120,10 +120,17 @@ async function getHaren(cookies, ids) {
       console.log("VIEWSTATE = ", $('input[name="__VIEWSTATE"]').val());
       console.log("VIEWSTATEGENERATOR = ", $('input[name="__VIEWSTATEGENERATOR"]').val());
       console.log("EVENTVALIDATION = ", $('input[name="__EVENTVALIDATION"]').val());
-      const harenHTML = await axios.post(rebookURL,
+      const harenHTML = await axios.get(rebookURL,
         new URLSearchParams({
           __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
-   
+          __EVENTARGUMENT: '',
+          __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
+          __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
+          __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
+          ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
+          VoertuigId: '40c46927-155a-4ba2-8969-b701f903b784',
+          KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
+          KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b'
         }),
         { headers: { Cookie: cookies.join('; ') } }
       );
