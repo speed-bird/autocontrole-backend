@@ -115,7 +115,11 @@ async function getHaren(cookies, ids) {
       const resaPage = await axios.get( resaURL, { headers: { Cookie: cookies.join('; ') } });
       let $ = cheerio.load(resaPage.data);
       const rebookURL = resaURL + "VoertuigId=" + ids.voertuigId + '&KlantId=' + ids.klantId + '&KeuringsTypeId=' + ids.keuringsTypeId + '&oldReservationId=' + ids.oldReservationId;
+      console.log("Cookies in getHaren = ", cookies);
       console.log("Rebook URL = ", rebookURL);
+      console.log("VIEWSTATE = ", $('input[name="__VIEWSTATE"]').val());
+      console.log("VIEWSTATEGENERATOR = ", $('input[name="__VIEWSTATEGENERATOR"]').val());
+      console.log("EVENTVALIDATION = ", $('input[name="__EVENTVALIDATION"]').val());
       const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
           __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
