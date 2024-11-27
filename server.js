@@ -38,7 +38,6 @@ app.post('/find-slots', async (req, res) => {
   try {
     console.log("Reservation selected = " + selectedReservation);
     const ids = await reBookIds(cookies);
-    console.log("IDS = "+ids.voertuigId+" - "+ids.klantId+" - "+ids.keuringsTypeId+" - "+ids.oldReservationId);
     const haren = await getHaren(cookies, ids);
     res.json({ message: 'Nouvelle action traitée', haren });
   }
