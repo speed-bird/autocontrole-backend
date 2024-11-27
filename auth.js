@@ -102,7 +102,6 @@ async function reBookIds(cookies) {
       keuringsTypeId,
       oldReservationId
   };
-  console.log("IDS = "+ids[0]+" - "+ids[1]+" - "+ids[2]+" - "+ids[3]);
   return (ids);
   } catch (error) {
       console.error('Erreur lors de la récupération des réservations :', error.message);
