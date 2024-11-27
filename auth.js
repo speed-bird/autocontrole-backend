@@ -127,7 +127,6 @@ async function getHaren(cookies, ids) {
         { headers: { Cookie: cookies.join('; ') } }
       );
       $ = cheerio.load(harenHTML);
-      return (harenHTML.data);
       console.log("harenHTML = ",harenHTML.data);
       const results = [];
       $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
@@ -136,8 +135,8 @@ async function getHaren(cookies, ids) {
           const time = span.find('label').text(); 
           results.push({ date, time });
       });
-      console.log(results);
-      return ("Results = "+results);
+      console.log("Results = ", results);
+      return (results);
   }
   catch (error) {
     console.error('Erreur lors de la récupération des réservations :', error.message);
