@@ -30,6 +30,7 @@ app.post('/login', async (req, res) => {
 // Route pour la nouvelle action
 app.post('/find-slots', async (req, res) => {
   const { selectedReservation, cookies } = req.body;
+  console.log("Cookies = " + cookies);
   try {
     console.log("Reservation selected = " + selectedReservation);
     const ids = await reBookIds(cookies);
