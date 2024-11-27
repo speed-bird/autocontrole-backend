@@ -156,6 +156,7 @@ async function getHaren(cookies, ids) {
       const rebookURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
       const harenHTML = await axios.post(rebookURL, postData, { headers: headers });
       $ = cheerio.load(harenHTML);
+      console.log(harenHTML);
       const results = [];
       $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
           const span = $(element);
