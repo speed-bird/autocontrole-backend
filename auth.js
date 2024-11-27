@@ -120,19 +120,18 @@ async function getHaren(cookies, ids) {
       console.log("VIEWSTATE = ", $('input[name="__VIEWSTATE"]').val());
       console.log("VIEWSTATEGENERATOR = ", $('input[name="__VIEWSTATEGENERATOR"]').val());
       console.log("EVENTVALIDATION = ", $('input[name="__EVENTVALIDATION"]').val());
-      const harenHTML = await axios.get(rebookURL,
+      const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
-          __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
+          __EVENTTARGET: 'ctl00$MainContent$rblStation$1',
           __EVENTARGUMENT: '',
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
-          ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
+          ctl00$MainContent$rblStation: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
         }),
         { headers: { Cookie: cookies.join('; ') } }
       );
       $ = cheerio.load(harenHTML);
-      return(harenHTML);
       const results = [];
       $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
           const span = $(element);
