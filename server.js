@@ -4,7 +4,10 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors({methods: ['GET', 'POST', 'OPTIONS']}));
+app.use(cors({
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true // Autorise l'envoi des cookies
+}));
 app.use(express.json()); // Parse les requêtes JSON
 app.use(express.urlencoded({ extended: true })); // Parse les requêtes URL-encoded
 
