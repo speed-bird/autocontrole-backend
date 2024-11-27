@@ -114,7 +114,7 @@ async function getHaren(cookies, ids) {
       const resaURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
       const resaPage = await axios.get( resaURL, { headers: { Cookie: cookies.join('; ') } });
       let $ = cheerio.load(resaPage.data);
-      const rebookURL = resaURL + "VoertuigId=" + ids.voertuigId + '&KlantId=' + ids.klantId + '&KeuringsTypeId=' + ids.keuringsTypeId; //+ '&oldReservationId=' + ids.oldReservationId;
+      const rebookURL = resaURL + "VoertuigId=" + ids.voertuigId + '&KlantId=' + ids.klantId + '&KeuringsTypeId=' + ids.keuringsTypeId + '&oldReservationId=' + ids.oldReservationId;
       console.log("Rebook URL = ", rebookURL);
       const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
@@ -123,7 +123,10 @@ async function getHaren(cookies, ids) {
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
-          ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93'
+          ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
+          VoertuigId: '40c46927-155a-4ba2-8969-b701f903b784',
+          KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
+          KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b'
         }),
         { headers: { Cookie: cookies.join('; ') } }
       );
