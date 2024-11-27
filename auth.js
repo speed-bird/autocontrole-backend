@@ -84,6 +84,7 @@ async function reBookIds(cookies) {
       { headers: { Cookie: cookies.join('; '), 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
     $ = cheerio.load(response.data);
+    console.log("HTML = ", response.data);
     const formAction = $('form').attr('action');
     console.log("Form actioon = ", formAction);
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
