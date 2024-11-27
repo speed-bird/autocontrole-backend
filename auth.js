@@ -111,7 +111,6 @@ async function reBookIds(cookies) {
 
 async function getHaren(cookies, ids) {
   try {
-      const qs = require('querystring');
       const headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
         'Accept-Encoding': 'gzip, deflate, br, zstd',
@@ -141,10 +140,10 @@ async function getHaren(cookies, ids) {
       const __EVENTVALIDATION = $('input[name="__EVENTVALIDATION"]').val();
 
       // Étape 3 : Construire les données à envoyer dans la requête POST
-      const postData = qs.stringify({
+      const postData = new URLSearchParams({
         __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
         __EVENTARGUMENT: '',
-        __VIEWSTATE,
+        __VIEWSTATE,  
         __VIEWSTATEGENERATOR,
         __EVENTVALIDATION,
         ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
