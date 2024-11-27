@@ -111,6 +111,7 @@ async function getHaren(cookies, ids) {
       const resaPage = await axios.get( resaURL, { headers: { Cookie: cookies.join('; ') } });
       let $ = cheerio.load(resaPage.data);
       const rebookURL = resaURL + ids[0] + '&' + ids[1] + '&' + ids[2] + '&' + ids[3];
+      console.log("Rebook URL = ", rebookURL);
       const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
           __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
