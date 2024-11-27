@@ -132,7 +132,7 @@ async function getHaren(cookies, ids) {
       };
       const resaURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
       const resaPage = await axios.get(resaURL, { headers: headers });
-      const $ = cheerio.load(resaPage.data);
+      let $ = cheerio.load(resaPage.data);
 
       // Étape 2 : Extraire les valeurs nécessaires pour la requête POST
       const __VIEWSTATE = $('input[name="__VIEWSTATE"]').val();
