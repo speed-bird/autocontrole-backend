@@ -128,7 +128,6 @@ async function getHaren(cookies, ids) {
         { headers: { Cookie: cookies.join('; ') } }
       );
       $ = cheerio.load(harenHTML);
-      return(harenHTML.data);
       const results = [];
       $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
           const span = $(element);
