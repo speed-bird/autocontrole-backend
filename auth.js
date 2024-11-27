@@ -114,7 +114,7 @@ async function getHaren(cookies, ids) {
       const resaURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
       const resaPage = await axios.get( resaURL, { headers: { Cookie: cookies.join('; ') } });
       let $ = cheerio.load(resaPage.data);
-      const rebookURL = resaURL + "VoertuigId=" + ids.voertuigId + '&KlantId=' + ids.klantId + '&KeuringsTypeId=' + ids.keuringsTypeId + '&oldReservationId=' + ids.oldReservationId;
+      const rebookURL = resaURL + "VoertuigId=" + ids.voertuigId + '&KlantId=' + ids.klantId + '&KeuringsTypeId=' + ids.keuringsTypeId; //+ '&oldReservationId=' + ids.oldReservationId;
       console.log("Rebook URL = ", rebookURL);
       const harenHTML = await axios.post(rebookURL,
         new URLSearchParams({
