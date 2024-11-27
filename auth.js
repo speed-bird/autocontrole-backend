@@ -123,6 +123,7 @@ async function getHaren(cookies, ids) {
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
+          ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93'
         }),
         { headers: { Cookie: cookies.join('; ') } }
       );
