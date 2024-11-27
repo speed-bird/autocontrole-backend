@@ -88,6 +88,9 @@ async function reBookIds(cookies) {
     const formAction = $('form').attr('action');
     console.log("Form actioon = ", formAction);
     const urlParams = new URLSearchParams(formAction.split('?')[1]);
+    console.log(typeof formAction); // Devrait afficher "string"
+    const queryString = formAction.split('?')[1];
+    console.log("Query string après split :", queryString);    
     const voertuigId = urlParams.get('VoertuigId');
     const klantId = urlParams.get('KlantId');
     const keuringsTypeId = urlParams.get('KeuringsTypeId');
