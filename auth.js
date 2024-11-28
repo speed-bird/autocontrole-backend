@@ -138,7 +138,7 @@ async function getHaren(cookies, ids) {
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
 
-    const reservationResponse = await instance.post(
+    const reservationResponse = await axios.post(
       reservationUrl,
       new URLSearchParams({
         __EVENTTARGET: station.target,
