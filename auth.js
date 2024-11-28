@@ -128,7 +128,9 @@ async function getSlots(cookies, ids) {
   const slots = {};
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
-
+    if (!slots[station.name]) {
+      slots[station.name] = []; // Initialisez un tableau vide si nécessaire
+    }
     const reservationResponse = await axios.post(
       reservationUrl,
       new URLSearchParams({
