@@ -37,7 +37,7 @@ app.post('/find-slots', async (req, res) => {
     console.log("Reservation selected = " + selectedReservation);
     const ids = await reBookIds(cookies);
     const haren = await getHaren(cookies, ids);
-    res.json({ message: 'Nouvelle action traitée', haren: haren });
+    res.json({ results: haren });
   }
   catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
