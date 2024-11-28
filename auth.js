@@ -169,7 +169,6 @@ async function getHaren(cookies, ids) {
         console.log("${titleAttr} ${contentText}");
       }
     }
-    brut_results.push = reservationResponse.data;
   };
   console.log(`\n--- Vérifications terminées ---`);
   const results = [];
