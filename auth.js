@@ -170,6 +170,8 @@ async function getHaren(cookies, ids) {
         },
       }
     );
+    const pageHTML = reservationResponse.data;
+    const $ = cheerio.load(pageHTML);
     const tijdstipIds = [
       'ctl00_MainContent_rblTijdstip1',
       'ctl00_MainContent_rblTijdstip2',
@@ -180,7 +182,7 @@ async function getHaren(cookies, ids) {
       'ctl00_MainContent_rblTijdstip7',
     ];
     for (const tijdstipId of tijdstipIds) {
-      const tijdstipSpan = $responsePage(`#${tijdstipId}`);
+      const tijdstipSpan = $(`#${tijdstipId}`);
       if (tijdstipSpan.length) {
         const titleAttr = tijdstipSpan.attr('title') || 'Date inconnue';
         const contentText = tijdstipSpan.text().trim();
