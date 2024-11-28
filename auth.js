@@ -110,67 +110,71 @@ async function reBookIds(cookies) {
 }
 
 async function getHaren(cookies, ids) {
-  try {
-      const headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'Accept-Encoding': 'gzip, deflate, br, zstd',
-        'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7,nl;q=0.6,de;q=0.5',
-        'Cache-Control': 'max-age=0',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Cookie': cookies.join('; '),
-        'Origin': 'https://planning.autocontrole.be',
-        'Referer': 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=40c46927-155a-4ba2-8969-b701f903b784&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b&oldReservationId=a36d460c-7ae3-4393-96f8-c08251a4c26f',
-        'Sec-CH-UA': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-        'Sec-CH-UA-Mobile': '?0',
-        'Sec-CH-UA-Platform': '"macOS"',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'same-origin',
-        'Sec-Fetch-User': '?1',
-        'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-      };
-      const resaURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
-      const resaPage = await axios.get(resaURL, { headers: headers });
-      let $ = cheerio.load(resaPage.data);
+  const reservationUrl =
+  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
+  const reservationPage = await instance.get(reservationUrl, {
+    headers: {
+      Cookie: cookies.join('; '),
+    },
+  });
+  const $reservation = cheerio.load(reservationPage.data);
 
-      // Étape 2 : Extraire les valeurs nécessaires pour la requête POST
-      const __VIEWSTATE = $('input[name="__VIEWSTATE"]').val();
-      const __VIEWSTATEGENERATOR = $('input[name="__VIEWSTATEGENERATOR"]').val();
-      const __EVENTVALIDATION = $('input[name="__EVENTVALIDATION"]').val();
+  const viewStateReservation = $reservation('input[name="__VIEWSTATE"]').val();
+  const viewStateGeneratorReservation = $reservation('input[name="__VIEWSTATEGENERATOR"]').val();
+  const eventValidationReservation = $reservation('input[name="__EVENTVALIDATION"]').val();
 
-      // Étape 3 : Construire les données à envoyer dans la requête POST
-      const postData = new URLSearchParams({
-        __EVENTTARGET: 'ctl00$MainContent$rblStation$0',
-        __EVENTARGUMENT: '',
-        __VIEWSTATE,  
-        __VIEWSTATEGENERATOR,
-        __EVENTVALIDATION,
-        ctl00$MainContent$rblStation: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
-        VoertuigId: '40c46927-155a-4ba2-8969-b701f903b784',
+  const stations = [
+    {
+      name: 'Schaerbeek',
+      target: 'ctl00$MainContent$rblStation$0',
+      id: 'FABB7EFC-F207-4043-A39D-40F24D800C93',
+    },
+    {
+      name: 'Haren',
+      target: 'ctl00$MainContent$rblStation$1',
+      id: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
+    },
+  ];
+
+  for (const station of stations) {
+    console.log(`\n--- Vérification pour la station : ${station.name} ---`);
+
+    const reservationResponse = await instance.post(
+      reservationUrl,
+      new URLSearchParams({
+        __EVENTTARGET: station.target,
+        __EVENTARGUMENT: '',    
+        __VIEWSTATE: viewStateReservation,
+        __VIEWSTATEGENERATOR: viewStateGeneratorReservation,
+        __EVENTVALIDATION: eventValidationReservation,
+        VoertuigId: '16e825e6-e99c-41d2-8461-4e1460dc080b',
         KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
-        KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b'
-      });
+        KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b',
+        ctl00$MainContent$rblStation: station.id,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Cookie: cookies.join('; '),
+          Referer: reservationUrl,
+        },
+      }
+    );
 
-      // Étape 4 : Effectuer la requête POST
-      const rebookURL = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
-      const harenHTML = await axios.post(rebookURL, postData, { headers: headers });
-      $ = cheerio.load(harenHTML.data);
-      return(harenHTML);
-      const results = [];
-      $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
-          const span = $(element);
-          const date = span.attr('title'); 
-          const time = span.find('label').text(); 
-          results.push({ date, time });
-      });
-      console.log("Results = ", results);
-      return (results);
-  }
-  catch (error) {
-    console.error('Erreur lors de la récupération des réservations :', error.message);
-  throw error;
-  }
+    const pageHTML = reservationResponse.data;
+    console.log(reservationResponse.data);
+  };
+  return(harenHTML);
+  const results = [];
+  $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
+      const span = $(element);
+      const date = span.attr('title'); 
+      const time = span.find('label').text(); 
+      results.push({ date, time });
+  });
+  console.log("Results = ", results);
+  return (results);
+  
 }
 
 export { auth, getMain, getBookings, reBookIds, getHaren };
