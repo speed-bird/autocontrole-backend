@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, getMain, getBookings, reBookIds, getHaren } from './auth.js';
+import { auth, getMain, getBookings, reBookIds, getSlots } from './auth.js';
 import cors from 'cors';
 
 const app = express();
@@ -36,8 +36,8 @@ app.post('/find-slots', async (req, res) => {
   try {
     console.log("Reservation selected = " + selectedReservation);
     const ids = await reBookIds(cookies);
-    const haren = await getHaren(cookies, ids);
-    res.json({ results: haren });
+    const slots = await getSlots(cookies, ids);
+    res.json({ results: slots });
   }
   catch (error) {
     console.error('Erreur lors de la connexion :', error.message);

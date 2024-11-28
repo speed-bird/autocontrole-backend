@@ -104,7 +104,7 @@ async function reBookIds(cookies) {
   }
 }
 
-async function getHaren(cookies, ids) {
+async function getSlots(cookies, ids) {
 
   const reservationUrl =
   'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
@@ -125,7 +125,7 @@ async function getHaren(cookies, ids) {
       id: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
     },
   ];
-  const results = [];
+  const slots = [];
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
 
@@ -166,14 +166,14 @@ async function getHaren(cookies, ids) {
       if (tijdstipSpan.length) {
         const date = tijdstipSpan.attr('title') || 'Date inconnue';
         const time = tijdstipSpan.text().trim();
-        results.push({name: station.name, date, time });
+        slots.push({name: station.name, date, time });
       }
     }
   };
   console.log(`\n--- Vérifications terminées ---`);
-  console.log("Results = ", results);
-  return (results);
+  console.log("Results = ", slots);
+  return (slots);
   
 }
 
-export { auth, getMain, getBookings, reBookIds, getHaren };
+export { auth, getMain, getBookings, reBookIds, getSlots };
