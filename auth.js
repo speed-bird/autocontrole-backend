@@ -110,6 +110,18 @@ async function reBookIds(cookies) {
 }
 
 async function getHaren(cookies, ids) {
+  const instance = axios.create({
+    baseURL: 'https://planning.autocontrole.be',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+      Referer: loginUrl,
+    },
+    withCredentials: true,
+    maxRedirects: 0,
+    validateStatus: function (status) {
+      return status <= 302;
+    },
+  });
   const reservationUrl =
   'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
   const reservationPage = await instance.get(reservationUrl, {
