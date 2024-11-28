@@ -149,6 +149,7 @@ async function getHaren(cookies, ids) {
     },
   ];
 
+  const brut_results = [];
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
 
@@ -174,10 +175,9 @@ async function getHaren(cookies, ids) {
       }
     );
 
-    const pageHTML = reservationResponse.data;
-    console.log(reservationResponse.data);
+    brut_results.push = reservationResponse.data;
   };
-  return(1);
+  return(brut_results);
   const results = [];
   $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
       const span = $(element);
