@@ -167,7 +167,7 @@ async function getHaren(cookies, ids) {
       if (tijdstipSpan.length) {
         const date = tijdstipSpan.attr('title') || 'Date inconnue';
         const time = tijdstipSpan.text().trim();
-        results.push({ station, date, time });
+        results.push({name: station.name, date, time });
       }
     }
   };
