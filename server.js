@@ -37,7 +37,7 @@ app.post('/find-slots', async (req, res) => {
     console.log("Reservation selected = " + selectedReservation);
     const ids = await reBookIds(cookies);
     const slots = await getSlots(cookies, ids);
-    res.json({ results: slots });
+    res.json({ slots: slots });
   }
   catch (error) {
     console.error('Erreur lors de la connexion :', error.message);
