@@ -110,6 +110,7 @@ async function reBookIds(cookies) {
 }
 
 async function getHaren(cookies, ids) {
+  const loginUrl = 'https://planning.autocontrole.be/';
   const instance = axios.create({
     baseURL: 'https://planning.autocontrole.be',
     headers: {
