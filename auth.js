@@ -161,23 +161,17 @@ async function getHaren(cookies, ids) {
       'ctl00_MainContent_rblTijdstip6',
       'ctl00_MainContent_rblTijdstip7',
     ];
+    const results = [];
     for (const tijdstipId of tijdstipIds) {
       const tijdstipSpan = $(`#${tijdstipId}`);
       if (tijdstipSpan.length) {
-        const titleAttr = tijdstipSpan.attr('title') || 'Date inconnue';
-        const contentText = tijdstipSpan.text().trim();
-        console.log(titleAttr + " " + contentText);
+        const date = tijdstipSpan.attr('title') || 'Date inconnue';
+        const time = tijdstipSpan.text().trim();
+        results.push({ date, time });
       }
     }
   };
   console.log(`\n--- Vérifications terminées ---`);
-  const results = [];
-  $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
-      const span = $(element);
-      const date = span.attr('title'); 
-      const time = span.find('label').text(); 
-      results.push({ date, time });
-  });
   console.log("Results = ", results);
   return (results);
   
