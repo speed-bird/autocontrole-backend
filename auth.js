@@ -166,7 +166,7 @@ async function getHaren(cookies, ids) {
       if (tijdstipSpan.length) {
         const titleAttr = tijdstipSpan.attr('title') || 'Date inconnue';
         const contentText = tijdstipSpan.text().trim();
-        console.log("${titleAttr} ${contentText}");
+        console.log(titleAttr + " " + contentText);
       }
     }
   };
