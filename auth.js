@@ -175,8 +175,9 @@ async function getHaren(cookies, ids) {
     );
 
     const pageHTML = reservationResponse.data;
+    console.log(reservationResponse.data);
   };
-  return(pageHTML);
+  return(1);
   const results = [];
   $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
       const span = $(element);
