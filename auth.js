@@ -106,21 +106,14 @@ async function reBookIds(cookies) {
 }
 
 async function getHaren(cookies, ids) {
-  const loginUrl = 'https://planning.autocontrole.be/';
-  
+
   const reservationUrl =
   'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
-  const reservationPage = await axios.get(reservationUrl, {
-    headers: {
-      Cookie: cookies.join('; '),
-    },
-  });
-  const $reservation = cheerio.load(reservationPage.data);
-
-  const viewStateReservation = $reservation('input[name="__VIEWSTATE"]').val();
-  const viewStateGeneratorReservation = $reservation('input[name="__VIEWSTATEGENERATOR"]').val();
-  const eventValidationReservation = $reservation('input[name="__EVENTVALIDATION"]').val();
-
+  const reservationPage = await axios.get(reservationUrl, { headers: { Cookie: cookies.join('; ') } });
+  let $ = cheerio.load(reservationPage.data);
+  const viewStateReservation = $('input[name="__VIEWSTATE"]').val();
+  const viewStateGeneratorReservation = $('input[name="__VIEWSTATEGENERATOR"]').val();
+  const eventValidationReservation = $('input[name="__EVENTVALIDATION"]').val();
   const stations = [
     {
       name: 'Schaerbeek',
@@ -133,7 +126,6 @@ async function getHaren(cookies, ids) {
       id: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
     },
   ];
-
   const brut_results = [];
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
@@ -141,15 +133,7 @@ async function getHaren(cookies, ids) {
     const reservationResponse = await axios.post(
       reservationUrl,
       new URLSearchParams({
-        __EVENTTARGET: station.target,
-        __EVENTARGUMENT: '',    
-        __VIEWSTATE: viewStateReservation,
-        __VIEWSTATEGENERATOR: viewStateGeneratorReservation,
-        __EVENTVALIDATION: eventValidationReservation,
-        VoertuigId: '16e825e6-e99c-41d2-8461-4e1460dc080b',
-        KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
-        KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b',
-        ctl00$MainContent$rblStation: station.id,
+       
       }),
       {
         headers: {
