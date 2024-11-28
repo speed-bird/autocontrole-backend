@@ -165,13 +165,18 @@ async function getSlots(cookies, ids) {
       const tijdstipSpan = $(`#${tijdstipId}`);
       if (tijdstipSpan.length) {
         const date = tijdstipSpan.attr('title') || 'Date inconnue';
-        const time = tijdstipSpan.text().trim();
-        slots.push({name: station.name, date, time });
+        const times = tijdstipSpan.text().trim().split(/(?=\d{2}:\d{2})/);
+        
+        times.forEach(time => {
+          if (time) {
+            slots.push({name: station.name, date, time});
+          }
+        });
       }
     }
   };
   console.log(`\n--- Vérifications terminées ---`);
-  console.log("Results = ", slots);
+  console.log("Slots = ", slots);
   return (slots);
   
 }
