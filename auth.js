@@ -125,7 +125,7 @@ async function getSlots(cookies, ids) {
       id: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
     },
   ];
-  const slots = [];
+  const slots = {};
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
 
@@ -169,7 +169,7 @@ async function getSlots(cookies, ids) {
         
         times.forEach(time => {
           if (time) {
-            slots.push({name: station.name, date, time});
+            slots[station.name].push({date, time});
           }
         });
       }
