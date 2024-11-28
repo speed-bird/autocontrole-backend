@@ -133,7 +133,15 @@ async function getHaren(cookies, ids) {
     const reservationResponse = await axios.post(
       reservationUrl,
       new URLSearchParams({
-       
+        __EVENTTARGET: station.target,
+        __EVENTARGUMENT: '',    
+        __VIEWSTATE: viewStateReservation,
+        __VIEWSTATEGENERATOR: viewStateGeneratorReservation,
+        __EVENTVALIDATION: eventValidationReservation,
+        VoertuigId: '16e825e6-e99c-41d2-8461-4e1460dc080b',
+        KlantId: '9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2',
+        KeuringsTypeId: '4fefac0f-e376-4c11-815b-59a137c3c88b',
+        ctl00$MainContent$rblStation: station.id,
       }),
       {
         headers: {
@@ -164,7 +172,7 @@ async function getHaren(cookies, ids) {
     }
     brut_results.push = reservationResponse.data;
   };
- 
+  console.log(`\n--- Vérifications terminées ${station.name} ---`);
   return(brut_results);
   const results = [];
   $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
