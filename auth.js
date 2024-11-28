@@ -170,9 +170,26 @@ async function getHaren(cookies, ids) {
         },
       }
     );
-
+    const tijdstipIds = [
+      'ctl00_MainContent_rblTijdstip1',
+      'ctl00_MainContent_rblTijdstip2',
+      'ctl00_MainContent_rblTijdstip3',
+      'ctl00_MainContent_rblTijdstip4',
+      'ctl00_MainContent_rblTijdstip5',
+      'ctl00_MainContent_rblTijdstip6',
+      'ctl00_MainContent_rblTijdstip7',
+    ];
+    for (const tijdstipId of tijdstipIds) {
+      const tijdstipSpan = $responsePage(`#${tijdstipId}`);
+      if (tijdstipSpan.length) {
+        const titleAttr = tijdstipSpan.attr('title') || 'Date inconnue';
+        const contentText = tijdstipSpan.text().trim();
+        console.log(`${titleAttr} ${contentText}`);
+      }
+    }
     brut_results.push = reservationResponse.data;
   };
+ 
   return(brut_results);
   const results = [];
   $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
