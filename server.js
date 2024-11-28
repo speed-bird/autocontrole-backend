@@ -21,7 +21,6 @@ app.post('/login', async (req, res) => {
   try {
     const cookies = await auth(username, password); // Appelle la fonction login
     const main = await getMain(cookies);
-    console.log("Cookies dans app 1 = ", cookies);
     const bookings = getBookings(main);
     return res.status(200).json({ message: 'Login successful', bookings, cookies });
   } 
@@ -34,7 +33,6 @@ app.post('/login', async (req, res) => {
 // Route pour la nouvelle action
 app.post('/find-slots', async (req, res) => {
   const { selectedReservation, cookies } = req.body;
-  console.log("Cookies dans app 2 = ", cookies);
   try {
     console.log("Reservation selected = " + selectedReservation);
     const ids = await reBookIds(cookies);

@@ -126,7 +126,6 @@ async function getHaren(cookies, ids) {
       id: '289340F7-3DF5-43AD-AFB7-71E4A27FE94D',
     },
   ];
-  const brut_results = [];
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
 
@@ -167,13 +166,12 @@ async function getHaren(cookies, ids) {
       if (tijdstipSpan.length) {
         const titleAttr = tijdstipSpan.attr('title') || 'Date inconnue';
         const contentText = tijdstipSpan.text().trim();
-        console.log(`${titleAttr} ${contentText}`);
+        console.log("${titleAttr} ${contentText}");
       }
     }
     brut_results.push = reservationResponse.data;
   };
-  console.log(`\n--- Vérifications terminées ${station.name} ---`);
-  return(brut_results);
+  console.log(`\n--- Vérifications terminées ---`);
   const results = [];
   $('span[id="ctl00_MainContent_rblTijdstip2"]').each((index, element) => {
       const span = $(element);
