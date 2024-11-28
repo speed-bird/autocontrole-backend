@@ -22,7 +22,7 @@ app.post('/login', async (req, res) => {
     const cookies = await auth(username, password); // Appelle la fonction login
     const main = await getMain(cookies);
     const bookings = getBookings(main);
-    return res.status(200).json({ message: 'Login successful', bookings, cookies });
+    return res.status(200).json({ bookings, cookies });
   } 
   catch (error) {
     console.error('Erreur lors de la connexion :', error.message);

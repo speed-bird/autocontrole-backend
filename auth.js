@@ -68,7 +68,6 @@ function getBookings (mainPage) {
 
 async function reBookIds(cookies) {
   try {
-    console.log("cookies dans rebookIDs = ", cookies);
     const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
     const resaPage = await axios.get(resaURL, { headers: { Cookie: cookies.join('; ') } });
     let $ = cheerio.load(resaPage.data);
