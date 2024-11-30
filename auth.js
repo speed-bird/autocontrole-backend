@@ -136,10 +136,7 @@ async function getSlots(cookies, ids) {
       new URLSearchParams({
         __EVENTTARGET: station.target,
         __EVENTARGUMENT: '',    
-        __VIEWSTATE: viewStateReservation,
-        __VIEWSTATEGENERATOR: viewStateGeneratorReservation,
-        __EVENTVALIDATION: eventValidationReservation,
-        ctl00$MainContent$rblStation: station.id,
+
       }),
       {
         headers: {
