@@ -143,9 +143,7 @@ async function getSlots(cookies, ids) {
       }),
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
           Cookie: cookies.join('; '),
-          
         },
       }
     );
