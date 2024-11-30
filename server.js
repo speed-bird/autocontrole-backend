@@ -6,20 +6,17 @@ const app = express();
 
 app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
-  credentials: true // Autorise l'envoi des cookies
+  credentials: true
 }));
-app.use(express.json()); // Parse les requêtes JSON
-app.use(express.urlencoded({ extended: true })); // Parse les requêtes URL-encoded
-
-// Route POST pour effectuer le login
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true })); 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body; // Récupère les données envoyées dans le body de la requête
-
+  const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Username or password missing' });
   }
   try {
-    const cookies = await auth(username, password); // Appelle la fonction login
+    const cookies = await auth(username, password);
     const main = await getMain(cookies);
     const bookings = getBookings(main);
     return res.status(200).json({ bookings, cookies });
@@ -30,7 +27,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Route pour la nouvelle action
 app.post('/find-slots', async (req, res) => {
   const { selectedReservation, cookies } = req.body;
   try {
@@ -45,7 +41,26 @@ app.post('/find-slots', async (req, res) => {
   }
 });
 
-// Lancer le serveur
+app.post('/save-data', async (req, res) => {
+  const { value } = req.body; // la valeur envoyée depuis le front-end
+  try {
+    // Enregistrer la donnée dans la base de données
+    await DataModel.create({ value });
+    res.status(200).send('Data saved successfully');
+  } catch (error) {
+    res.status(500).send('Error saving data');
+  }
+});
+
+app.get('/get-data', async (req, res) => {
+  try {
+    const data = await DataModel.findOne(); // Récupérer la dernière valeur
+    res.status(200).json(data); // Envoyer la donnée au front-end
+  } catch (error) {
+    res.status(500).send('Error fetching data');
+  }
+});
+
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Serveur lancé sur http://localhost:${port}`);

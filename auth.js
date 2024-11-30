@@ -107,7 +107,7 @@ async function reBookIds(cookies) {
 async function getSlots(cookies, ids) {
 
   const reservationUrl =
-  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
+  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?';
   const reservationPage = await axios.get(reservationUrl, { headers: { Cookie: cookies.join('; ') } });
   let $ = cheerio.load(reservationPage.data);
   const viewStateReservation = $('input[name="__VIEWSTATE"]').val();
