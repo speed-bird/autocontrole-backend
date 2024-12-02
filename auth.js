@@ -108,7 +108,7 @@ async function getSlots(cookies, ids) {
 
   const resaUrl =
   'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
-  const resaPage = await axios.get(reservationUrl, { headers: { Cookie: cookies.join('; ') } });
+  const resaPage = await axios.get(resaUrl, { headers: { Cookie: cookies.join('; ') } });
   let $ = cheerio.load(resaPage.data);
   const viewStateResa = $('input[name="__VIEWSTATE"]').val();
   const viewStateGeneratorResa = $('input[name="__VIEWSTATEGENERATOR"]').val();
@@ -131,7 +131,6 @@ async function getSlots(cookies, ids) {
     if (!slots[station.name]) {
       slots[station.name] = []; // Initialisez un tableau vide si nécessaire
     }
-     
     const params = new URLSearchParams({
       __EVENTTARGET: station.target,
       __EVENTARGUMENT: '',
