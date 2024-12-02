@@ -68,11 +68,11 @@ function getBookings (mainPage) {
 
 async function getIds(cookies) {
   try {
-    const resaURL = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
-    const resaPage = await axios.get(resaURL, { headers: { Cookie: cookies.join('; ') } });
+    const resaUrl = 'https://planning.autocontrole.be/Reservaties/ReservatieOverzicht.aspx';
+    const resaPage = await axios.get(resaUrl, { headers: { Cookie: cookies.join('; ') } });
     let $ = cheerio.load(resaPage.data);
     const response = await axios.post(
-      resaURL,
+      resaUrl,
       new URLSearchParams({
         __EVENTTARGET: 'ctl00$MainContent$gvAutokeuring$ctl02$lbRebook',
         __EVENTARGUMENT: '',
@@ -168,7 +168,7 @@ async function getSlots(cookies, ids) {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     while (attempts < maxAttempts) {
       console.log(`Tentative ${attempts + 1} pour la station ${station.name}`);
-      resaResponse = await axios.post(resaURL, 
+      resaResponse = await axios.post(resaUrl, 
         new URLSearchParams({
           __EVENTTARGET: $('#ctl00_MainContent_lbDatumVolgende'),
           __EVENTARGUMENT: '',
