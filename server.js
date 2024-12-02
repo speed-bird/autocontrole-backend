@@ -1,5 +1,5 @@
 import express from 'express';
-import { auth, getMain, getBookings, reBookIds, getSlots } from './auth.js';
+import { auth, getMain, getBookings, getIds, getSlots } from './auth.js';
 import cors from 'cors';
 
 const app = express();
@@ -28,11 +28,11 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/find-slots', async (req, res) => {
-  const { selectedReservation, cookies } = req.body;
+  const { selectedReservation, cookies, startdate, enddate } = req.body;
   try {
     console.log("Reservation selected = " + selectedReservation);
-    const ids = await reBookIds(cookies);
-    const slots = await getSlots(cookies, ids);
+    const ids = await getIds(cookies);
+    const slots = await getSlots(cookies, ids, startdate, enddate);
     res.json({ slots: slots });
   }
   catch (error) {
