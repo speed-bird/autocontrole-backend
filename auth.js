@@ -107,8 +107,8 @@ async function getIds(cookies) {
 async function getSlots(cookies, ids) {
 
   const resaUrl =
-  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId;
-  console.log('https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId);
+  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
+  console.log(console.log('https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId));
   console.log(resaUrl);
   const resaPage = await axios.get(resaUrl, { headers: { Cookie: cookies.join('; ') } });
   let $ = cheerio.load(resaPage.data);
@@ -186,6 +186,7 @@ async function getSlots(cookies, ids) {
         if (tijdstipSpan.length) {
           const date = tijdstipSpan.attr('title') || 'Date inconnue';
           const times = tijdstipSpan.text().trim().split(/(?=\d{2}:\d{2})/);
+  
           times.forEach((time) => {
             if (time) {
               slots[station.name].push({ date, time });
