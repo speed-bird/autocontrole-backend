@@ -79,7 +79,6 @@ async function getIds(cookies) {
         __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
         __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
         __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
-        ctl00$MainContent$hfStartDate: $('#ctl00_MainContent_hfStartDate').attr('value'),
       }),
       { headers: { Cookie: cookies.join('; '), 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
@@ -175,6 +174,7 @@ async function getSlots(cookies, ids) {
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
+          ctl00$MainContent$hfStartDate: $('#ctl00_MainContent_hfStartDate').attr('value'),
         }),
         { headers: { Cookie: cookies.join('; ') } });
       pageHTML = resaResponse.data;
