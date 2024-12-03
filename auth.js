@@ -139,9 +139,9 @@ async function getSlots(cookies, ids) {
       __EVENTVALIDATION: eventValidationResa,
       ctl00$MainContent$rblStation: station.id,
     }); 
-    const resaResponse = await axios.post(resaUrl, params, { headers: { Cookie: cookies.join('; ') } });
-    const pageHTML = resaResponse.data;
-    const $ = cheerio.load(pageHTML);
+    let resaResponse = await axios.post(resaUrl, params, { headers: { Cookie: cookies.join('; ') } });
+    let pageHTML = resaResponse.data;
+    let $ = cheerio.load(pageHTML);
     const tijdstipIds = [
       'ctl00_MainContent_rblTijdstip1',
       'ctl00_MainContent_rblTijdstip2',
@@ -180,7 +180,7 @@ async function getSlots(cookies, ids) {
       pageHTML = resaResponse.data;
       $ = cheerio.load(pageHTML);
       tijdstipIds.forEach((tijdstipId) => {
-        const tijdstipSpan = $(`#${tijdstipId}`);
+        tijdstipSpan = $(`#${tijdstipId}`);
         if (tijdstipSpan.length) {
           const date = tijdstipSpan.attr('title') || 'Date inconnue';
           const times = tijdstipSpan.text().trim().split(/(?=\d{2}:\d{2})/);
