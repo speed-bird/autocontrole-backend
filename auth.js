@@ -79,6 +79,7 @@ async function getIds(cookies) {
         __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
         __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
         __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
+        ctl00$MainContent$hfStartDate: $('#ctl00_MainContent_hfStartDate').attr('value'),
       }),
       { headers: { Cookie: cookies.join('; '), 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
@@ -106,11 +107,7 @@ async function getIds(cookies) {
 
 async function getSlots(cookies, ids) {
 
-  let resaUrl =
-  'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId=16e825e6-e99c-41d2-8461-4e1460dc080b&KlantId=9b495d05-bbf7-4c4d-8bc9-bdb2941f5ef2&KeuringsTypeId=4fefac0f-e376-4c11-815b-59a137c3c88b';
-  console.log('https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId);
-  console.log(resaUrl);
-  resaUrl = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId+'&oldReservationId='+ids.oldReservationId;
+  const resaUrl = 'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId+'&oldReservationId='+ids.oldReservationId;
   const resaPage = await axios.get(resaUrl, { headers: { Cookie: cookies.join('; ') } });
   let $ = cheerio.load(resaPage.data);
   const viewStateResa = $('input[name="__VIEWSTATE"]').val();
