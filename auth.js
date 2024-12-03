@@ -174,7 +174,6 @@ async function getSlots(cookies, ids) {
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
-      
         }),
         { headers: { Cookie: cookies.join('; ') } });
       pageHTML = resaResponse.data;
