@@ -108,6 +108,8 @@ async function getSlots(cookies, ids) {
 
   const resaUrl =
   'https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId;
+  console.log('https://planning.autocontrole.be/Reservaties/NieuwAutokeuringReservatie.aspx?VoertuigId='+ids.voertuigId+'&KlantId='+ids.klantId+'&KeuringsTypeId='+ids.keuringsTypeId);
+  console.log(resaUrl);
   const resaPage = await axios.get(resaUrl, { headers: { Cookie: cookies.join('; ') } });
   let $ = cheerio.load(resaPage.data);
   const viewStateResa = $('input[name="__VIEWSTATE"]').val();
@@ -184,7 +186,6 @@ async function getSlots(cookies, ids) {
         if (tijdstipSpan.length) {
           const date = tijdstipSpan.attr('title') || 'Date inconnue';
           const times = tijdstipSpan.text().trim().split(/(?=\d{2}:\d{2})/);
-  
           times.forEach((time) => {
             if (time) {
               slots[station.name].push({ date, time });
