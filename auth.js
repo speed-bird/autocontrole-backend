@@ -180,7 +180,7 @@ async function getSlots(cookies, ids) {
       pageHTML = resaResponse.data;
       $ = cheerio.load(pageHTML);
       tijdstipIds.forEach((tijdstipId) => {
-        tijdstipSpan = $(`#${tijdstipId}`);
+        const tijdstipSpan = $(`#${tijdstipId}`);
         if (tijdstipSpan.length) {
           const date = tijdstipSpan.attr('title') || 'Date inconnue';
           const times = tijdstipSpan.text().trim().split(/(?=\d{2}:\d{2})/);
