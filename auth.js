@@ -168,7 +168,7 @@ async function getSlots(cookies, ids) {
     pages.pageREF = pageHTML;
 
     let date = getCurrentMonday();
-    const maxAttempts = 3;
+    const maxAttempts = 6;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     while (attempts < maxAttempts) {
@@ -201,8 +201,8 @@ async function getSlots(cookies, ids) {
           });
         }
       });
-      if ($('body').text().includes('Texte attendu')) {
-        console.log('Texte trouvé, arrêt des vérifications.');
+      if ($('#ctl00_MainContent_lblSituatieConfiguratieOngeldig').length > 0) {
+        console.log('Span trouvé, arrêt des vérifications.');
         break;
       }
       await delay(2000);
@@ -213,7 +213,7 @@ async function getSlots(cookies, ids) {
     }
     
   }
-  return (pages);
+  //return (pages);
   return slots;
 }
 
