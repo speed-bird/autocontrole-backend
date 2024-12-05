@@ -174,50 +174,60 @@ async function getSlots(cookies, ids) {
     while (attempts < maxAttempts) {
       console.log("Date de l'attempt " + attempts + " = " + date);
       console.log(`Tentative ${attempts + 1} pour la station ${station.name}`);
-      resaResponse = await axios.post(resaUrl, 
+    
+      resaResponse = await axios.post(
+        resaUrl,
         new URLSearchParams({
-          __EVENTTARGET: $('#ctl00_MainContent_lbDatumVolgende'),
+          __EVENTTARGET: $('#ctl00_MainContent_lbDatumVolgende').attr('id'),
           __EVENTARGUMENT: '',
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
           ctl00$MainContent$lbSelectWeek: date,
         }),
-        { headers: { Cookie: cookies.join('; ') } });
+        { headers: { Cookie: cookies.join('; ') } }
+      );
+    
       date = getNextMondayDate(date);
       pageHTML = resaResponse.data;
-      pages[page + (attempts+1)] = pageHTML;
+      pages[page + (attempts + 1)] = pageHTML;
       $ = cheerio.load(pageHTML);
+    
       tijdstipIds.forEach((tijdstipId) => {
         const tijdstipSpan = $(`#${tijdstipId}`);
         if (tijdstipSpan.length) {
           const date = tijdstipSpan.attr('title') || 'Date inconnue';
           const times = tijdstipSpan.text().trim().split(/(?=\d{2}:\d{2})/);
-  
+    
           times.forEach((time) => {
             if (time) {
               const exists = slots[station.name].some(
                 (slot) => slot.date === date && slot.time === time.trim()
               );
-        
+    
               if (!exists) {
                 slots[station.name].push({ date, time: time.trim() });
               }
             }
-          } )
-        };
+          });
+        }
+      });
+    
       if ($('#ctl00_MainContent_lblSituatieConfiguratieOngeldig').text().trim() !== '') {
         console.log('Texte trouvé dans le span, arrêt des vérifications.');
         break;
-    }
+      }
+    
       await delay(2000);
       attempts++;
-      if (attempts === maxAttempts) {
-        console.log("Nombre maximum de tentatives atteint.");
-      }
+    }
+    
+    if (attempts === maxAttempts) {
+      console.log("Nombre maximum de tentatives atteint.");
     }
     
   }
+
   //return (pages);
   return slots;
 }
