@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { getNextMondayDate, getTodayFormatted } from './misc.js';
+import { getCurrentMonday, getNextMondayDate, getTodayFormatted } from './misc.js';
 
 async function auth(username, password) {
   try {
@@ -165,9 +165,9 @@ async function getSlots(cookies, ids) {
     });
     const pages = {};
     let page = "page";
-    let today = getTodayFormatted();
-    let date = today;
     pages.pageREF = pageHTML;
+
+    let date = getCurrentMonday();
     const maxAttempts = 3;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

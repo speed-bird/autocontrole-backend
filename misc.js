@@ -1,3 +1,23 @@
+function getCurrentMonday() {
+    // Obtenir la date actuelle
+    let today = new Date();
+  
+    // Calculer le nombre de jours à soustraire pour obtenir le lundi de la semaine
+    let daysToSubtract = today.getDay() - 1; // 0 = dimanche, 1 = lundi, ..., 6 = samedi
+    if (daysToSubtract < 0) daysToSubtract = 6; // Si aujourd'hui est dimanche, soustraire 6 jours pour obtenir le lundi précédent
+  
+    // Calculer la date du lundi de la semaine actuelle
+    today.setDate(today.getDate() - daysToSubtract);
+  
+    // Formater la date en "JJ/MM/AAAA"
+    let day = today.getDate().toString().padStart(2, '0'); // Jour
+    let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Mois (ajouter 1 car getMonth() retourne 0-11)
+    let year = today.getFullYear(); // Année
+  
+    return `${day}/${month}/${year}`; // Retourne la date formatée
+  }
+
+
 function getNextMondayDate(dateInput) {
     let parts = dateInput.split('/');
     let date = new Date(parts[2], parts[1] - 1, parts[0]); // (year, month, day)
@@ -30,4 +50,4 @@ function getTodayFormatted() {
   let todayFormatted = getTodayFormatted();
   
 
-export { getNextMondayDate, getTodayFormatted };
+export { getCurrentMonday, getNextMondayDate, getTodayFormatted };
