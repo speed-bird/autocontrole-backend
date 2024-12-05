@@ -167,7 +167,7 @@ async function getSlots(cookies, ids) {
     });
     pages.pageREF = pageHTML;
 
-    let date = "27/01/2025"
+    let date = getNextMondayDate(getCurrentMonday());
     const maxAttempts = 6;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
