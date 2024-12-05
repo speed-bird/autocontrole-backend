@@ -207,7 +207,7 @@ async function getSlots(cookies, ids) {
         console.log("Nombre maximum de tentatives atteint.");
       }
     }
-    return (pages);
+    //return (pages);
   }
   return slots;
 }
