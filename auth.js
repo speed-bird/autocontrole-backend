@@ -167,7 +167,7 @@ async function getSlots(cookies, ids) {
     });
     pages.pageREF = pageHTML;
 
-    let date = getCurrentMonday();
+    let date = "27/01/2025"
     const maxAttempts = 6;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -201,10 +201,10 @@ async function getSlots(cookies, ids) {
           });
         }
       });
-      if ($('#ctl00_MainContent_lblSituatieConfiguratieOngeldig').length > 0) {
-        console.log('Span trouvé, arrêt des vérifications.');
+      if ($('#ctl00_MainContent_lblSituatieConfiguratieOngeldig').text().trim() !== '') {
+        console.log('Texte trouvé dans le span, arrêt des vérifications.');
         break;
-      }
+    }
       await delay(2000);
       attempts++;
       if (attempts === maxAttempts) {
@@ -213,7 +213,7 @@ async function getSlots(cookies, ids) {
     }
     
   }
-  //return (pages);
+  return (pages);
   return slots;
 }
 
