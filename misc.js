@@ -14,7 +14,6 @@ function getNextMondayDate(dateInput) {
     let month = (date.getMonth() + 1).toString().padStart(2, '0');
     let year = date.getFullYear();
   
-    console.log(`${day}/${month}/${year}`);
     return `${day}/${month}/${year}`;
     
 }
@@ -29,7 +28,6 @@ function getTodayFormatted() {
   }
   
   let todayFormatted = getTodayFormatted();
-  console.log(todayFormatted); // Affiche la date d'aujourd'hui au format "dd/mm/yyyy"
   
 
 export { getNextMondayDate, getTodayFormatted };

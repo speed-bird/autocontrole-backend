@@ -172,6 +172,7 @@ async function getSlots(cookies, ids) {
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     while (attempts < maxAttempts) {
+      console.log("Date de l'attempt " + attempts + " = " + date);
       console.log(`Tentative ${attempts + 1} pour la station ${station.name}`);
       resaResponse = await axios.post(resaUrl, 
         new URLSearchParams({
