@@ -168,7 +168,7 @@ async function getSlots(cookies, ids) {
     pages.pageREF = pageHTML;
 
     let date = getNextMondayDate(getCurrentMonday());
-    const maxAttempts = 6;
+    const maxAttempts = 10;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     while (attempts < maxAttempts) {
@@ -196,11 +196,16 @@ async function getSlots(cookies, ids) {
   
           times.forEach((time) => {
             if (time) {
-              slots[station.name].push({ date, time });
+              const exists = slots[station.name].some(
+                (slot) => slot.date === date && slot.time === time.trim()
+              );
+        
+              if (!exists) {
+                slots[station.name].push({ date, time: time.trim() });
+              }
             }
-          });
-        }
-      });
+          } )
+        };
       if ($('#ctl00_MainContent_lblSituatieConfiguratieOngeldig').text().trim() !== '') {
         console.log('Texte trouvé dans le span, arrêt des vérifications.');
         break;
