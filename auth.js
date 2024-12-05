@@ -213,7 +213,7 @@ async function getSlots(cookies, ids) {
     }
     
   }
-  return (pages);
+  //return (pages);
   return slots;
 }
 
