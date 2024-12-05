@@ -182,7 +182,7 @@ async function getSlots(cookies, ids) {
         }),
         { headers: { Cookie: cookies.join('; ') } });
       pageHTML = resaResponse.data;
-      pages[page + (attempts+1)] = pageHTML;
+      pages[page + (attempts+2)] = pageHTML;
       $ = cheerio.load(pageHTML);
       tijdstipIds.forEach((tijdstipId) => {
         const tijdstipSpan = $(`#${tijdstipId}`);
