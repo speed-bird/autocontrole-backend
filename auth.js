@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { getNextMondayDate, getTodayFormatted } from './misc.js';
 
 async function auth(username, password) {
   try {
@@ -164,6 +165,8 @@ async function getSlots(cookies, ids) {
     });
     const pages = {};
     let page = "page";
+    let today = getTodayFormatted();
+    let date = today;
     pages.pageREF = pageHTML;
     const maxAttempts = 3;
     let attempts = 0;
@@ -177,9 +180,10 @@ async function getSlots(cookies, ids) {
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
-          ctl00$MainContent$lbSelectWeek: "16/12/2024",
+          ctl00$MainContent$lbSelectWeek: date,
         }),
         { headers: { Cookie: cookies.join('; ') } });
+      date = getNextMondayDate(date);
       pageHTML = resaResponse.data;
       pages[page + (attempts+1)] = pageHTML;
       $ = cheerio.load(pageHTML);
