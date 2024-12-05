@@ -126,6 +126,8 @@ async function getSlots(cookies, ids) {
     },
   ];
   const slots = {};
+  const pages = {};
+  let page = "page";
   for (const station of stations) {
     console.log(`\n--- Vérification pour la station : ${station.name} ---`);
     if (!slots[station.name]) {
@@ -163,8 +165,6 @@ async function getSlots(cookies, ids) {
         });
       }
     });
-    const pages = {};
-    let page = "page";
     pages.pageREF = pageHTML;
 
     let date = getCurrentMonday();
@@ -211,8 +211,9 @@ async function getSlots(cookies, ids) {
         console.log("Nombre maximum de tentatives atteint.");
       }
     }
-    return (pages);
+    
   }
+  return (pages);
   return slots;
 }
 
