@@ -162,7 +162,9 @@ async function getSlots(cookies, ids) {
         });
       }
     });
-    return (pageHTML);
+    const pages = {};
+    let page = "page";
+    pages.page1 = pageHTML;
     const maxAttempts = 3;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -178,6 +180,7 @@ async function getSlots(cookies, ids) {
         }),
         { headers: { Cookie: cookies.join('; ') } });
       pageHTML = resaResponse.data;
+      pages[page + (attempts+1)] = pageHTML;
       $ = cheerio.load(pageHTML);
       tijdstipIds.forEach((tijdstipId) => {
         const tijdstipSpan = $(`#${tijdstipId}`);
@@ -203,6 +206,7 @@ async function getSlots(cookies, ids) {
       }
     }
   }
+  return (pages);
   return slots;
 }
 
