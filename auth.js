@@ -162,6 +162,7 @@ async function getSlots(cookies, ids) {
         });
       }
     });
+    return (pageHTML);
     const maxAttempts = 3;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
