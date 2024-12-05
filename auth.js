@@ -181,7 +181,7 @@ async function getSlots(cookies, ids) {
           __VIEWSTATE: $('input[name="__VIEWSTATE"]').val(),
           __VIEWSTATEGENERATOR: $('input[name="__VIEWSTATEGENERATOR"]').val(),
           __EVENTVALIDATION: $('input[name="__EVENTVALIDATION"]').val(),
-          ctl00$MainContent$hfStartDate: date,
+          ctl00$MainContent$lbSelectWeek: date,
         }),
         { headers: { Cookie: cookies.join('; ') } });
       date = getNextMondayDate(date);
