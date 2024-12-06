@@ -168,7 +168,7 @@ async function getSlots(cookies, ids) {
     pages.pageREF = pageHTML;
 
     let date = getNextMondayDate(getCurrentMonday());
-    const maxAttempts = 10;
+    const maxAttempts = 3;
     let attempts = 0;
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     while (attempts < maxAttempts) {
