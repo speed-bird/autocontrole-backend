@@ -111,7 +111,6 @@ async function getSlots(cookies, ids) {
   const resaPage = await axios.get(resaUrl, { headers: { Cookie: cookies.join('; ') } });
   let $ = cheerio.load(resaPage.data);
   const viewStateResa = $('input[name="__VIEWSTATE"]').val();
-  const viewStateGeneratorResa = $('input[name="__VIEWSTATEGENERATOR"]').val();
   const eventValidationResa = $('input[name="__EVENTVALIDATION"]').val();
   const stations = [
     {
@@ -134,10 +133,7 @@ async function getSlots(cookies, ids) {
       slots[station.name] = []; // Initialisez un tableau vide si nécessaire
     }
     const params = new URLSearchParams({
-      __EVENTTARGET: station.target,
-      __EVENTARGUMENT: '',
       __VIEWSTATE: viewStateResa,
-      __VIEWSTATEGENERATOR: viewStateGeneratorResa,
       __EVENTVALIDATION: eventValidationResa,
       ctl00$MainContent$rblStation: station.id,
     }); 
@@ -166,7 +162,6 @@ async function getSlots(cookies, ids) {
       }
     });
     pages.pageREF = pageHTML;
-
     let date = getNextMondayDate(getCurrentMonday());
     const maxAttempts = 3;
     let attempts = 0;
